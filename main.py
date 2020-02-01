@@ -12,6 +12,7 @@ import os, pygame
 from pygame.locals import *
 from pygame.compat import geterror
 from card import Card
+from helpers import *
 from hero import Hero
 from enemy import Enemy
 from helpers import *
@@ -32,9 +33,6 @@ def load_sound(name):
 #         print("Cannot load sound: %s" % fullname)
 #         raise SystemExit(str(geterror()))
     return
-
-
-
 
 def main():
     """this function is called when the program starts.
@@ -76,16 +74,17 @@ def main():
         
     # Main Loop
     going = True
-    enemy_turn = True
     while going:
         clock.tick(60)
 
         # Handle Input Events
+
         if enemy_turn:
             enemy.attack()
             health.updates(-5)
             enemy_turn=False
             
+
         for event in pygame.event.get():
             if event.type == QUIT:
                 going = False
