@@ -65,11 +65,13 @@ def main():
     # Prepare Game Objects
     clock = pygame.time.Clock()
     hero = Hero()
+
     enemy = Enemy("enemy.png")
-    health = Health(background)
-    energy = Energy(background)
-    turn_button = Button(bg=background,txt="End Turn",x=.5,y=.1)
-    
+    health = Health(screen)
+    energy = Energy(screen)
+
+    turn_button = Button(background,"End Turn",.5,.1)
+
     all_sprites = pygame.sprite.RenderPlain((hero,enemy))
     #used when checking for clicks on cards, avoid checking clicks on non card elements
     cards = pygame.sprite.RenderPlain()
@@ -81,49 +83,68 @@ def main():
     # Main Loop
     going = True
     enemy_turn = True
+    player_turn = True
+    
+    # Draw Everything
+   #screen.blit(background, (0, 0))
+    all_sprites.draw(screen)
+    pygame.display.flip()
+    all_sprites.update()
+
     while going:
-        clock.tick(60)
-
-        # Handle Input Events
-
-        if enemy_turn:
-            enemy.attack()
-            enemy_turn=False
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                going = False
-            elif event.type == KEYDOWN and event.key == K_ESCAPE:
-                going = False
-            elif event.type == MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
-                clicked = [s for s in cards if s.rect.collidepoint(pos)]
-                if turn_button.rect.collidepoint(pos):
-                    turn_button.clicked()
-                    health.updates(damage=-5)
-                for card in clicked: 
-                    card.clicked(None,None)
-            elif event.type == RESIZABLE:
+        clock.tick(60)  
+        
+        # Handle Input Events            
+        while player_turn:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    player_turn = False
+                    going = False
+                    break
+                elif event.type == MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos()
+                    if turn_button.rect.collidepoint(pos):
+                        player_turn = False
+                    else:
+                        clicked = [s for s in cards if s.rect.collidepoint(pos)]
+                        for card in clicked: 
+                            card.clicked(hero, enemy)
+                            
+                elif event.type == RESIZABLE:
                 #redefine screen and fit background to screen
-                surface = pygame.display.set_mode((event.w, event.h),
-                                                  pygame.RESIZABLE)
-                background = pygame.Surface(screen.get_size())
-                background = background.convert()    
-                background.fill((250, 250, 250))
-                
-                #re-render all objects
-                health.updates(bg=background)
-                turn_button.update(bg=background)
-                energy.updates(bg=background)
-                for sprite in all_sprites:
-                    sprite.update()
-              
+                    surface = pygame.display.set_mode((event.w, event.h),
+                                                      pygame.RESIZABLE)
+                    background = pygame.Surface(screen.get_size())
+                    background = background.convert()    
+                    background.fill((250, 250, 250))
+                    
+                    #re-render all objects
+                    health.updates(bg=background)
+                    turn_button.update(bg=background)
+                    energy.updates(bg=background)
+                    for sprite in all_sprites:
+                        sprite.update()
+        enemy.attack()
+        
+        player_turn = True
+        
+        screen.blit(background, (0,0))
 
         all_sprites.update()
-
-        # Draw Everything
-        screen.blit(background, (0, 0))
+        health.updates(-5, screen)
+        energy.updates(-5, screen)
+        if health.isDead():
+            going = False
         all_sprites.draw(screen)
+       
         pygame.display.flip()
+        
+        
+        
+        
+        
+
+        
 
     pygame.quit()
 

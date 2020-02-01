@@ -5,19 +5,17 @@ from helpers import *
 
 class Health():
     
-    def __init__(self,bg,health=100):
+
+    def __init__(self,screen):
         self.health = 100
-        self.background = bg
-        self.updates()
+        self.updates(0, screen)
         
-    def updates(self,bg=None,damage=0):
-        if bg is not None:
-            self.background = bg
+    def updates(self,damage, screen):
         self.health += damage
         font = pygame.font.Font(None, 36)
         self.text = font.render("HP:"+str(self.health), 1, (255, 0, 0))
-        textpos = self.text.get_rect(centerx=self.background.get_width()*.1,centery=self.background.get_height()*.9)
-        self.background.blit(self.text, textpos)
-    
+        textpos = self.text.get_rect(centerx=screen.get_width()*.1,centery=screen.get_height()*.9)
+        screen.blit(self.text, textpos)
 
-       
+    def isDead(self):
+        return self.health == 0
