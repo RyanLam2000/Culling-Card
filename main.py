@@ -12,11 +12,8 @@ import os, pygame
 from pygame.locals import *
 from pygame.compat import geterror
 from card import Card
-from hero import Hero
-from enemy import Enemy
-
+from helpers import *
 from Cursor import Cursor
-
 
 def load_sound(name):
     class NoneSound:
@@ -81,8 +78,7 @@ class Chimp(pygame.sprite.Sprite):
         """this will cause the monkey to start spinning"""
         if not self.dizzy:
             self.dizzy = 1
-            self.original = self.image
-
+            self.original = self.image  
 
 def main():
     """this function is called when the program starts.
@@ -114,11 +110,8 @@ def main():
     clock = pygame.time.Clock()
 
     chimp = Chimp()
-    hero = Hero()
-    enemy = Enemy()
-    all_cards = pygame.sprite.RenderPlain((chimp,fist,hero,enemy))
     cursor = Cursor()
-
+    all_cards = pygame.sprite.RenderPlain((chimp, cursor))
     cards = pygame.sprite.RenderPlain()
     for i in range(0,5): 
         card=Card(i)
@@ -127,15 +120,10 @@ def main():
         
     # Main Loop
     going = True
-    enemy_turn = True
     while going:
         clock.tick(60)
 
         # Handle Input Events
-        if enemy_turn:
-            enemy.attack()
-            enemy_turn=False
-            
         for event in pygame.event.get():
             if event.type == QUIT:
                 going = False
