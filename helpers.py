@@ -1,12 +1,15 @@
 import os, pygame
 from pygame.locals import *
 from pygame.compat import geterror
+
 if not pygame.font:
     print("Warning, fonts disabled")
 if not pygame.mixer:
     print("Warning, sound disabled")
+    
 main_dir = os.path.split(os.path.abspath(__file__))[0]
 data_dir = os.path.join(main_dir, "data")
+
 def load_image(name, colorkey=None):
     fullname = os.path.join(data_dir, name)
     try:

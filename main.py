@@ -12,25 +12,9 @@ import os, pygame
 from pygame.locals import *
 from pygame.compat import geterror
 from card import Card
+from hero import Hero
+from enemy import Enemy
 from helpers import *
-
-
-
-# functions to create our resources
-# def load_image(name, colorkey=None):
-#     fullname = os.path.join(data_dir, name)
-#     try:
-#         image = pygame.image.load(fullname)
-#     except pygame.error:
-#         print("Cannot load image:", fullname)
-#         raise SystemExit(str(geterror()))
-#     image = image.convert()
-#     if colorkey is not None:
-#         if colorkey == -1:
-#             colorkey = image.get_at((0, 0))
-#         image.set_colorkey(colorkey, RLEACCEL)
-#     return image, image.get_rect()
-
 
 def load_sound(name):
     class NoneSound:
@@ -124,34 +108,6 @@ class Chimp(pygame.sprite.Sprite):
             self.dizzy = 1
             self.original = self.image
 
-# class Card(pygame.sprite.Sprite):
-#     
-#     def __init__(self,slot):
-#         pygame.sprite.Sprite.__init__(self)  # call Sprite intializer
-#         #position in deck
-#         self.slot = slot 
-#         
-#         #Load image and scale down
-#         self.full_img = load_image("download.png", -1)[0]
-#         self.image = pygame.transform.scale(self.full_img,(50,75))
-#         #Card hitbox
-#         self.rect = self.image.get_rect()
-#         
-#         screen = pygame.display.get_surface()
-#         self.area = screen.get_rect()
-#  
-#         #set position = width * slot
-#         self.card_width = self.image.get_size()[0];
-#         self.rect.topleft = self.card_width*slot, screen.get_size()[1]-75
-#         self.selected = False
-#     
-#     def clicked(self):
-#         """Update in response to click
-#         """
-#         if not self.selected:
-#             self.rect.topleft = (self.rect.topleft[0],self.rect.topleft[1]+10) 
-#             self.selected = True
-#        
 
 def main():
     """this function is called when the program starts.
@@ -184,7 +140,9 @@ def main():
 
     chimp = Chimp()
     fist = Fist()
-    all_cards = pygame.sprite.RenderPlain((chimp,fist))
+    hero = Hero()
+    enemy = Enemy()
+    all_cards = pygame.sprite.RenderPlain((chimp,fist,hero,enemy))
     cards = pygame.sprite.RenderPlain()
     for i in range(0,5): 
         card=Card(i)
@@ -193,10 +151,15 @@ def main():
         
     # Main Loop
     going = True
+    enemy_turn = True
     while going:
         clock.tick(60)
 
         # Handle Input Events
+        if enemy_turn:
+            enemy.attack()
+            enemy_turn=False
+            
         for event in pygame.event.get():
             if event.type == QUIT:
                 going = False

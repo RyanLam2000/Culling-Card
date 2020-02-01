@@ -21,13 +21,13 @@ class Card(pygame.sprite.Sprite):
  
         #set position = width * slot
         self.card_width = self.image.get_size()[0];
-        self.rect.topleft = self.card_width*slot, screen.get_size()[1]-75
+        self.rect.topleft = (screen.get_width()*.25)+self.card_width*slot, screen.get_size()[1]-100
         self.selected = False
     
     def clicked(self):
         """Update in response to click
         """
         if not self.selected:
-            self.rect.topleft = (self.rect.topleft[0],self.rect.topleft[1]+10) 
+            self.rect.topleft = (self.rect.topleft[0],self.rect.topleft[1]-20) 
             self.selected = True
        
