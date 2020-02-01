@@ -7,9 +7,9 @@ class Enemy(pygame.sprite.Sprite):
     
     def __init__(self, img):
         pygame.sprite.Sprite.__init__(self)  # call Sprite intializer
+        self.img = img
         self.update()
         #Load image and scale down
-        self.img = img
 
         
     def attack(self):
