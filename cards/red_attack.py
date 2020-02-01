@@ -1,6 +1,6 @@
 import card
 
-class redAttack(card):
+class RedAttack(card):
     def clicked(self, mob):
         if mob.type == "blue":
             mob.health -= 3

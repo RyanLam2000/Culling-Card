@@ -1,51 +1,52 @@
 from card import Card
+from cards.blue_attack import BlueAttack
+from cards.red_attack import RedAttack
+from cards.green_attack import GreenAttack
+from cards.defend_card import DefendCard
+from cards.draw_card import DrawCard
+
 import random
 
 
-def get_card_type(n: int, deck: {str:int}):
-    for key in deck:
-        if deck[key] >= n:
-            return key
-        n -= deck[key]
+def add_new_cards(deck:[Card], card_type, num):
+    for i in range(num):
+        deck.append(card_type())
 
 class Deck:
     def __init__(self):
-        # Maps types of Cards to how many of each remain in the deck
-        deck = dict()
-        deck['Attack'] = 5
-        deck['Defend'] = 3
-        deck['Draw'] = 2
+        # Store Cards remaining in the deck
+        # Cards are drawn from the back of the list
+        deck = list()
+        add_new_cards(deck, BlueAttack, 2)
+        add_new_cards(deck, RedAttack, 2)
+        add_new_cards(deck, GreenAttack, 2)
+        add_new_cards(deck, DefendAttack, 3)
+        add_new_cards(deck, DrawAttack, 2)
+
+        random.shuffle(deck)
         self.deck = deck
-    
-    
+        
     # Number of remaining cards in the deck
     def __len__(self):
         return sum(self.deck.values())
     
     
     def draw(self):
-        # Determine what kind of Card will be drawn
-        num_remaining = len(self)
-        if (num_remaining == 0):
+        if (len(self) == 0):
             return
         
-        rand = random.randint(1, numRemaining)
-        card_type = get_card_type(rand, self.deck)
-        self.deck(card_type) -= 1
-        
-        # Create and return the appropriate Card
-        return Card(card_type)
+        return self.deck.pop(-1)
     
     
     def drawN(self, num_cards: int):
-        cards = []
-        for i in range(min(num_cards, len(self))):
-            cards.append(self.draw)
+        if (num_cards > len(self)):
+            drawn_cards = self.deck
+            self.deck = list()
+            return drawn_cards
             
-        return cards
-    
+        drawn_cards = self.deck[-num_cards:]
+        self.deck = self.deck[:-num_cards]
+        return drawn_cards
     
     def merge(self, cards: [Card]):
-        for card in cards:
-            card_type = card.type
-            self.deck[card_type] += 1
+        self.deck.extend(cards)
