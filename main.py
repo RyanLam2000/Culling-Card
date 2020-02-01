@@ -74,6 +74,7 @@ def main():
         
     # Main Loop
     going = True
+    enemy_turn = True
     while going:
         clock.tick(60)
 
