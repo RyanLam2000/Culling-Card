@@ -17,12 +17,11 @@ class Card(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.full_img,(int(.1*screen.get_width()),int(.15*screen.get_width())))
         #Card hitbox
         self.rect = self.image.get_rect()
-        
        
  
         #set position = width * slot
         self.card_width = self.image.get_size()[0];
-        self.rect.topleft = (screen.get_width()*.25)+self.card_width*slot, screen.get_size()[1]-100
+        self.rect.topleft = (screen.get_width()*.25)+self.card_width*slot, screen.get_size()[1]-(self.image.get_height()*1.3)
         self.selected = False
     
     def clicked(self, player, enemy):
