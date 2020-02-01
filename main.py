@@ -99,6 +99,8 @@ def main():
             elif event.type == MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 clicked = [s for s in cards if s.rect.collidepoint(pos)]
+                if turn_button.rect.collidepoint(pos):
+                    turn_button.clicked()
                 for card in clicked: 
                     card.clicked()
 

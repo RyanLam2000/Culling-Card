@@ -3,7 +3,7 @@ from pygame.locals import *
 from pygame.compat import geterror
 from helpers import *
 
-class Button():
+class Button(pygame.sprite.Sprite):
     
     def __init__(self,bg,txt,x,y):
         self.background = bg
@@ -13,9 +13,11 @@ class Button():
         textpos = self.text.get_rect(centerx=self.background.get_width()*x,centery=
         36+(y*self.background.get_height()))
         self.background.blit(self.text, textpos)
+        self.rect = textpos
   
         
     def clicked(self):
+        print("clicked")
         pass
 
        
