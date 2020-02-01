@@ -29,7 +29,7 @@ class Deck:
         if (num_remaining == 0):
             return
         
-        rand = random.randint(1, numRemaining)
+        rand = random.randint(1, num_remaining)
         card_type = get_card_type(rand, self.deck)
         self.deck(card_type) -= 1
         
