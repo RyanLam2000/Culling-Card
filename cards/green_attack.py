@@ -1,7 +1,7 @@
-import card
+from card import Card
 
-class greenAttack(card):
-    def clicked(self, mob):
+class GreenAttack(Card):
+    def clicked(self, p, mob):
         if mob.type == "red":
             mob.health -= 3
         elif mob.type == "blue":

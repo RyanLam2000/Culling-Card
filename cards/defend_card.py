@@ -1,5 +1,5 @@
-import card
+from card import Card
 
-class defendCard(card):
-    def clicked(self, player):
-        player.defence += 5
+class DefendCard(Card):
+    def clicked(self, p, mob):
+        p.defence += 5
