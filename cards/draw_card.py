@@ -1,6 +1,6 @@
-import card
+from card import Card
 
-class DrawCard(card):
-    def clicked(self):
+class DrawCard(Card):
+    def clicked(self, p, mob):
         print("POT OF GREED ALLOWS ME TO DRAW TWO MORE CARDS. I WILL START MY TURN BY PLAYING POT OF GREED WHICH ALLOWS ME TO DRAW TWO MORE CARDS.")
         

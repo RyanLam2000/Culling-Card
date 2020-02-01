@@ -5,7 +5,7 @@ from helpers import *
 
 class Card(pygame.sprite.Sprite):
     
-    def __init__(self,slot):
+    def __init__(self,slot=None):
         pygame.sprite.Sprite.__init__(self)  # call Sprite intializer
         #position in deck
         self.slot = slot 
@@ -25,7 +25,7 @@ class Card(pygame.sprite.Sprite):
         self.rect.topleft = (screen.get_width()*.25)+self.card_width*slot, screen.get_size()[1]-100
         self.selected = False
     
-    def clicked(self):
+    def clicked(self, player, enemy):
         """Update in response to click
         """
         if not self.selected:
