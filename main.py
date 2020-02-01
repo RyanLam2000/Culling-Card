@@ -120,9 +120,9 @@ def main():
                     background.fill((250, 250, 250))
                     
                     #re-render all objects
-                    health.updates(bg=background)
-                    turn_button.update(bg=background)
-                    energy.updates(bg=background)
+                    health.updates(screen)
+                    turn_button.update(screen)
+                    energy.updates(screen)
                     for sprite in all_sprites:
                         sprite.update()
         enemy.attack()
@@ -132,8 +132,8 @@ def main():
         screen.blit(background, (0,0))
 
         all_sprites.update()
-        health.updates(-5, screen)
-        energy.updates(-5, screen)
+        health.updates(screen, -5)
+        energy.updates(screen, -5)
         if health.isDead():
             going = False
         all_sprites.draw(screen)
