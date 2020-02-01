@@ -66,13 +66,13 @@ def main():
     clock = pygame.time.Clock()
     hero = Hero()
 
-    #enemy = Enemy("enemy.png")
+    enemy = Enemy("enemy.png")
     health = Health(screen)
     energy = Energy(screen)
 
     turn_button = Button(background,"End Turn",.5,.1)
 
-    all_sprites = pygame.sprite.RenderPlain((hero))
+    all_sprites = pygame.sprite.RenderPlain((hero, enemy))
     #used when checking for clicks on cards, avoid checking clicks on non card elements
     cards = pygame.sprite.RenderPlain()
     for i in range(0,5): 
@@ -122,13 +122,16 @@ def main():
                     background.fill((250, 250, 250))
                     
                     #re-render all objects
+                    screen.blit(background, (0,0))
                     health.updates(screen)
                     turn_button.update(screen)
                     energy.updates(screen)
                     for sprite in all_sprites:
                         sprite.update()
+                    all_sprites.draw(screen)
+                    pygame.display.flip()
         
-        '''enemy.attack()'''
+        enemy.attack()
         
         player_turn = True
         
@@ -137,7 +140,7 @@ def main():
         all_sprites.update()
         health.updates(screen, -5)
         energy.updates(screen, -5)
-        turn_button.update()
+        turn_button.update(screen)
         if health.isDead():
             going = False
         all_sprites.draw(screen)
