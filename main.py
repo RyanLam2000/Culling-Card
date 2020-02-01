@@ -17,6 +17,8 @@ from hero import Hero
 from enemy import Enemy
 from helpers import *
 from health_bar import Health
+from energy_bar import Energy
+from button import Button
 
 
 def load_sound(name):
@@ -40,7 +42,7 @@ def main():
        a loop until the function returns."""
     # Initialize Everything
     pygame.init()
-    screen = pygame.display.set_mode((500, 500))
+    screen = pygame.display.set_mode((700, 700),pygame.RESIZABLE)
     pygame.display.set_caption("Culling Card")
     pygame.mouse.set_visible(1)
 
@@ -65,11 +67,15 @@ def main():
     hero = Hero()
     enemy = Enemy()
     health = Health(background)
-    all_cards = pygame.sprite.RenderPlain((hero,enemy))
+    energy = Energy(background)
+    turn_button = Button(background,"End Turn",.5,.1)
+    
+    all_sprites = pygame.sprite.RenderPlain((hero,enemy))
+    #used when checking for clicks on cards, avoid checking clicks on non card elements
     cards = pygame.sprite.RenderPlain()
     for i in range(0,5): 
         card=Card(i)
-        all_cards.add(card)
+        all_sprites.add(card)
         cards.add(card)
         
     # Main Loop
@@ -83,9 +89,8 @@ def main():
         if enemy_turn:
             enemy.attack()
             health.updates(-5)
+            energy.updates(-5)
             enemy_turn=False
-            
-
         for event in pygame.event.get():
             if event.type == QUIT:
                 going = False
@@ -97,11 +102,11 @@ def main():
                 for card in clicked: 
                     card.clicked()
 
-        all_cards.update()
+        all_sprites.update()
 
         # Draw Everything
         screen.blit(background, (0, 0))
-        all_cards.draw(screen)
+        all_sprites.draw(screen)
         pygame.display.flip()
 
     pygame.quit()
