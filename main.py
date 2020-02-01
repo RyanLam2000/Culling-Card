@@ -66,13 +66,13 @@ def main():
     clock = pygame.time.Clock()
     hero = Hero()
 
-    enemy = Enemy("enemy.png")
+    #enemy = Enemy("enemy.png")
     health = Health(screen)
     energy = Energy(screen)
 
     turn_button = Button(background,"End Turn",.5,.1)
 
-    all_sprites = pygame.sprite.RenderPlain((hero,enemy))
+    all_sprites = pygame.sprite.RenderPlain((hero))
     #used when checking for clicks on cards, avoid checking clicks on non card elements
     cards = pygame.sprite.RenderPlain()
     for i in range(0,5): 
@@ -87,16 +87,17 @@ def main():
     
     # Draw Everything
    #screen.blit(background, (0, 0))
+    all_sprites.update()
+    turn_button.update(screen)
     all_sprites.draw(screen)
     pygame.display.flip()
-    all_sprites.update()
-
+    
     while going:
         clock.tick(60)  
         
         # Handle Input Events
             
-        while player_turn:
+        while player_turn:                  # turn doesn't end until player clicks end turn
             for event in pygame.event.get():
                 if event.type == QUIT:
                     player_turn = False
@@ -104,8 +105,9 @@ def main():
                     break
                 elif event.type == MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
-                    if turn_button.rect.collidepoint(pos):
-                        player_turn = False
+                    if turn_button.rect.collidepoint(pos): # player clicked end turn
+                        player_turn = False 
+                        print("skipped a turn")
                     else:
                         clicked = [s for s in cards if s.rect.collidepoint(pos)]
                         for card in clicked: 
@@ -120,30 +122,27 @@ def main():
                     background.fill((250, 250, 250))
                     
                     #re-render all objects
-                    health.updates(bg=background)
-                    turn_button.update(bg=background)
-                    energy.updates(bg=background)
+                    health.updates(screen)
+                    turn_button.update(screen)
+                    energy.updates(screen)
                     for sprite in all_sprites:
                         sprite.update()
-        enemy.attack()
+        
+        '''enemy.attack()'''
         
         player_turn = True
         
+        
         screen.blit(background, (0,0))
-
         all_sprites.update()
-        health.updates(-5, screen)
-        energy.updates(-5, screen)
+        health.updates(screen, -5)
+        energy.updates(screen, -5)
+        turn_button.update()
         if health.isDead():
             going = False
         all_sprites.draw(screen)
        
         pygame.display.flip()
-        
-        
-        
-        
-        
 
         
 
