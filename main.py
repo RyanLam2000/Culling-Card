@@ -99,6 +99,7 @@ def main():
                 clicked = [s for s in cards if s.rect.collidepoint(pos)]
                 if turn_button.rect.collidepoint(pos):
                     turn_button.clicked()
+                    health.updates(damage=-5)
                 for card in clicked: 
                     card.clicked(None,None)
             elif event.type == RESIZABLE:
