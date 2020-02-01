@@ -8,8 +8,10 @@ class Energy():
     def __init__(self,bg):
         self.energy = 100
         self.background = bg
-        
-    def updates(self,damage):
+        self.updates()
+    def updates(self,bg=None,damage=0):
+        if bg is not None: 
+            self.background = bg
         self.energy += damage
         font = pygame.font.Font(None, 36)
         self.text = font.render("EN:"+str(self.energy), 1, (0, 0, 255))

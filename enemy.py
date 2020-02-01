@@ -7,8 +7,13 @@ class Enemy(pygame.sprite.Sprite):
     
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)  # call Sprite intializer
-        
+        self.update()
         #Load image and scale down
+        
+    def attack(self):
+        print("attack")
+        
+    def update(self):
         self.full_img = load_image("enemy.png", -1)[0]
         self.image = pygame.transform.scale(self.full_img,(150,150))
         #Card hitbox
@@ -21,5 +26,4 @@ class Enemy(pygame.sprite.Sprite):
         self.card_width = self.image.get_size()[0];
         self.rect.topleft = (screen.get_width()*.7), screen.get_size()[1]*.5
     
-    def attack(self):
-        print("attack")
+        

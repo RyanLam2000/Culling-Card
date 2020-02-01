@@ -42,7 +42,7 @@ def main():
        a loop until the function returns."""
     # Initialize Everything
     pygame.init()
-    screen = pygame.display.set_mode((700, 700),pygame.RESIZABLE)
+    screen = pygame.display.set_mode((800, 700),pygame.RESIZABLE)
     pygame.display.set_caption("Culling Card")
     pygame.mouse.set_visible(1)
 
@@ -68,7 +68,7 @@ def main():
     enemy = Enemy()
     health = Health(background)
     energy = Energy(background)
-    turn_button = Button(background,"End Turn",.5,.1)
+    turn_button = Button(bg=background,txt="End Turn",x=.5,y=.1)
     
     all_sprites = pygame.sprite.RenderPlain((hero,enemy))
     #used when checking for clicks on cards, avoid checking clicks on non card elements
@@ -88,8 +88,6 @@ def main():
 
         if enemy_turn:
             enemy.attack()
-            health.updates(-5)
-            energy.updates(-5)
             enemy_turn=False
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -102,7 +100,22 @@ def main():
                 if turn_button.rect.collidepoint(pos):
                     turn_button.clicked()
                 for card in clicked: 
-                    card.clicked()
+                    card.clicked(None,None)
+            elif event.type == RESIZABLE:
+                #redefine screen and fit background to screen
+                surface = pygame.display.set_mode((event.w, event.h),
+                                                  pygame.RESIZABLE)
+                background = pygame.Surface(screen.get_size())
+                background = background.convert()    
+                background.fill((250, 250, 250))
+                
+                #re-render all objects
+                health.updates(bg=background)
+                turn_button.update(bg=background)
+                energy.updates(bg=background)
+                for sprite in all_sprites:
+                    sprite.update()
+              
 
         all_sprites.update()
 

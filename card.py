@@ -9,7 +9,17 @@ class Card(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)  # call Sprite intializer
         #position in deck
         self.slot = slot 
+        self.update()
         
+    
+    def clicked(self, player, enemy):
+        """Update in response to click
+        """
+        if not self.selected:
+            self.rect.topleft = (self.rect.topleft[0],self.rect.topleft[1]-20) 
+            self.selected = True
+            
+    def update(self): 
         screen = pygame.display.get_surface()
         self.area = screen.get_rect()
         #Load image and scale down
@@ -21,13 +31,6 @@ class Card(pygame.sprite.Sprite):
  
         #set position = width * slot
         self.card_width = self.image.get_size()[0];
-        self.rect.topleft = (screen.get_width()*.25)+self.card_width*slot, screen.get_size()[1]-(self.image.get_height()*1.3)
+        self.rect.topleft = (screen.get_width()*.25)+self.card_width*self.slot, screen.get_size()[1]-(self.image.get_height()*1.3)
         self.selected = False
-    
-    def clicked(self, player, enemy):
-        """Update in response to click
-        """
-        if not self.selected:
-            self.rect.topleft = (self.rect.topleft[0],self.rect.topleft[1]-20) 
-            self.selected = True
        
