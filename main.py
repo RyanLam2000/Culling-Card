@@ -65,7 +65,7 @@ def main():
     # Prepare Game Objects
     clock = pygame.time.Clock()
     hero = Hero()
-    enemy = Enemy()
+    enemy = Enemy("enemy.png")
     health = Health(background)
     energy = Energy(background)
     turn_button = Button(bg=background,txt="End Turn",x=.5,y=.1)
