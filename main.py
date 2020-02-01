@@ -63,7 +63,7 @@ def main():
     # Prepare Game Objects
     clock = pygame.time.Clock()
     hero = Hero()
-    enemy = Enemy()
+    enemy = Enemy("enemy.png")
     health = Health(background)
     all_cards = pygame.sprite.RenderPlain((hero,enemy))
     cards = pygame.sprite.RenderPlain()
