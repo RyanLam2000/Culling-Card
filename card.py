@@ -10,14 +10,15 @@ class Card(pygame.sprite.Sprite):
         #position in deck
         self.slot = slot 
         
+        screen = pygame.display.get_surface()
+        self.area = screen.get_rect()
         #Load image and scale down
         self.full_img = load_image("download.png", -1)[0]
-        self.image = pygame.transform.scale(self.full_img,(50,75))
+        self.image = pygame.transform.scale(self.full_img,(int(.1*screen.get_width()),int(.15*screen.get_width())))
         #Card hitbox
         self.rect = self.image.get_rect()
         
-        screen = pygame.display.get_surface()
-        self.area = screen.get_rect()
+       
  
         #set position = width * slot
         self.card_width = self.image.get_size()[0];

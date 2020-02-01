@@ -15,7 +15,7 @@ from card import Card
 from hero import Hero
 from enemy import Enemy
 from helpers import *
-
+from health_bar import Health
 
 
 def load_sound(name):
@@ -66,8 +66,8 @@ def main():
     clock = pygame.time.Clock()
     hero = Hero()
     enemy = Enemy()
+    health = Health(background)
     all_cards = pygame.sprite.RenderPlain((hero,enemy))
-
     cards = pygame.sprite.RenderPlain()
     for i in range(0,5): 
         card=Card(i)
@@ -83,6 +83,7 @@ def main():
         # Handle Input Events
         if enemy_turn:
             enemy.attack()
+            health.updates(-5)
             enemy_turn=False
             
         for event in pygame.event.get():
