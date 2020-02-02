@@ -14,7 +14,6 @@ from bg_image import BackgroundImage
 from get_enemy import get_enemy
 
 
-
 white = (255, 255, 255) 
 green = (0, 255, 0) 
 blue = (0, 0, 128) 
