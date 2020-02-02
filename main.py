@@ -96,8 +96,8 @@ def startgame(screen):
                         screen.fill([255, 255, 255])
                         screen.blit(background.image, background.rect)
                         fs_rect = Text("Full Screen",0,0,screen,font,white,black)
-                        med_rect = Text("960*720",0,48,screen,font,white,black)
-                        sm_rect = Text("800*600",0,76,screen,font,white,black)
+                        med_rect = Text("1280*800",0,48,screen,font,white,black)
+                        sm_rect = Text("1024*768",0,76,screen,font,white,black)
                         ret_rect = Text("Return",0,108,screen,font,white,black)   
                         res_text = [fs_rect,med_rect,sm_rect,ret_rect]
                         pygame.display.flip()
@@ -239,15 +239,15 @@ def main():
     pygame.init()
     width = pygame.display.Info().current_w
     height = pygame.display.Info().current_h
-    screen = pygame.display.set_mode((600, 600),RESIZABLE)
+    screen = pygame.display.set_mode((1024,728),RESIZABLE)
     pygame.display.set_caption("Culling Card")
     pygame.mouse.set_visible(1)
     fs = False
     size = startgame(screen) 
     if size=="sm":
-        screen = pygame.display.set_mode((800, 600),RESIZABLE)
+        screen = pygame.display.set_mode((1024, 728),RESIZABLE)
     elif size =="med":
-        screen = pygame.display.set_mode((800, 600),RESIZABLE)
+        screen = pygame.display.set_mode((1280, 800),RESIZABLE)
     elif size == "full":
         screen = pygame.display.set_mode((width, height),FULLSCREEN)
         fs = True
