@@ -42,6 +42,7 @@ def redraw_screen(screen,ui_elements,all_sprites,click = False):
         for sprite in all_sprites:
             sprite.update()
     all_sprites.draw(screen)
+    
 
 
 
@@ -102,24 +103,13 @@ def main():
     
     while going:
         clock.tick(60)  
-        drawn_cards = deck.draw_n(5)
-        hand.extend(drawn_cards)
-        num_drawn = len(hand)
         
-        # If deck is empty, discard pile goes back to deck
-        if (num_drawn < 5):
-            deck.merge(discard)
-            discard = []
-            # Cards left to draw
-            to_draw = 5 - num_drawn
-            hand.extend(deck.draw_n(to_draw))
-        
-        for i in range(0, 5):
-            hand[i].set_slot(i)
-            all_sprites.add(hand[i])
-            cards.add(hand[i])
+        deck.draw_n(5, hand, discard)
+        print(f"hand length: {len(hand)}, deck_Size: {len(deck)}, discard: {len(discard)}")
+        all_sprites.add(hand)
+        cards.add(hand)
             
-        cards.draw(screen)
+        redraw_screen(screen, ui_elements, all_sprites)
         pygame.display.flip()
         
         # Handle Input Events
@@ -137,33 +127,33 @@ def main():
                         discard.extend(hand)
                         hand = []
                         player_turn = False
+                        print(f"hand length: {len(hand)}, deck_Size: {len(deck)}, discard: {len(discard)}")
                     else:
-                        clicked = [s for s in cards if s.rect.collidepoint(pos)]
-                        for card in clicked: 
-                            card.clicked(hero, enemy, deck, hand, discard)       
+                        for card in hand:
+                            if card.rect.collidepoint(pos):
+                                hand.remove(card)
+                                card.kill()
+                                discard.append(card)
+                                
+                                card.clicked(hero, enemy, deck, hand, discard)                            
+                                cards.add(hand)
+                                all_sprites.add(hand)
                         redraw_screen(screen,ui_elements,all_sprites,True)
                         pygame.display.flip()
+                        print(f"hand length: {len(hand)}, deck_Size: {len(deck)}, discard: {len(discard)}")
 
                  
                 elif event.type == RESIZABLE:
                     #redefine screen and fit background to screen
-                    surface = pygame.display.set_mode((event.w, event.h),
+                    pygame.display.set_mode((event.w, event.h),
                                                       pygame.RESIZABLE)
                     redraw_screen(screen,ui_elements,all_sprites)
                     pygame.display.flip()
                  
-
         enemy.attack()
-         
         player_turn = True
-
-        screen.blit(background.image, background.rect)
-        all_sprites.update()
-
         if health.isDead():
-            going = False
-        all_sprites.draw(screen)
-       
+            going = False       
 
     pygame.quit()
 
