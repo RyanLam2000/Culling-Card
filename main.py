@@ -47,42 +47,76 @@ def redraw_screen(screen,ui_elements,all_sprites,click = False):
         for sprite in all_sprites:
             sprite.update()
     all_sprites.draw(screen)
+def render_text(string,w,h,screen,font,c1,c2):
+    text = font.render(string,True,c1,c2)
+    text_rect = text.get_rect(center=(w,h))
+    screen.blit(text,text_rect)
+    return text_rect
     
+
 def startgame(screen):
-    pass
-#     background = BackgroundImage('data/background.png',[0,0])
-#     screen.fill([255, 255, 255])
-#     screen.blit(background.image, background.rect)
-#     font = pygame.font.Font(None, 32) 
-#     width = screen.get_width()
-#     height = screen.get_height()
-#     
-# 
-#     continue_text = font.render('Continue?', True, white, black)
-#     score_text = font.render('High Score: ', True, white, black)
-#     streak_text = font.render('Streak: ',True,white,black)
-#     
-#     streak_rect = streak_text.get_rect(center=(width/2,height/2+64))
-#     top_rect=top_text.get_rect(center=(width/2,height/2))
-#     score_rect=score_text.get_rect(center=(width/2,height/2+32))
-#     cont_rect = continue_text.get_rect(center=(width/2,height/2+96))
-#     
-#     screen.blit(top_text,top_rect)
-#     screen.blit(score_text,score_rect)
-#     screen.blit(continue_text,cont_rect)
-#     screen.blit(streak_text,streak_rect)
-#   
-#     pygame.display.flip()
-#     while True:
-#         for event in pygame.event.get():
-#             if event.type == QUIT:
-#                 exit()
-#             elif event.type == MOUSEBUTTONDOWN:
-#                 pos = pygame.mouse.get_pos()
-#                 if cont_rect.collidepoint(pos): # player clicked end turn
-#                     return True
-#     return False
-#     
+   
+    title_font = pygame.font.Font(None,48)
+    font = pygame.font.Font(None, 32) 
+    width = screen.get_width()
+    height = screen.get_height()
+    
+    with open('data/high_score.txt',"r+") as f:
+        score=f.readline()
+        f.close()  
+    while True:
+        print("redrawing")
+        background = BackgroundImage('data/background.png',[0,0])
+        screen.fill([255, 255, 255])
+        screen.blit(background.image, background.rect)
+        render_text("Culling Card",width/2,height/2,screen,font,white,black)
+        cont_rect = render_text("Play",width/2,height/2+48,screen,font,white,black)
+        render_text("High Score: "+score,width/2,height/2+76,screen,font,white,black)
+        streak_rect = render_text("Choose Resolution",width/2,height/2+108,screen,font,white,black)
+                    
+        pygame.display.flip()
+        ret_flag = False
+        while True:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    exit()
+                elif event.type == MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos()
+                    if cont_rect.collidepoint(pos): # player clicked end turn
+                        return True
+                    elif streak_rect.collidepoint(pos): 
+                        print("res chose")
+                        background = BackgroundImage('data/background.png',[0,0])
+                        screen.fill([255, 255, 255])
+                        screen.blit(background.image, background.rect)
+                        fs_rect = render_text("Full Screen",width/2,height/2,screen,font,white,black)
+                        med_rect = render_text("960*720",width/2,height/2+48,screen,font,white,black)
+                        sm_rect = render_text("800*600",width/2,height/2+76,screen,font,white,black)
+                        ret_rect = render_text("Return",width/2,height/2+108,screen,font,white,black)
+     
+                        pygame.display.flip()
+                       
+                        while True:
+                            for event in pygame.event.get():
+                                if event.type == QUIT:
+                                    exit()
+                                elif event.type == MOUSEBUTTONDOWN:
+                                    pos = pygame.mouse.get_pos()
+                                    if ret_rect.collidepoint(pos):
+                                        print('return')
+                                        ret_flag = True
+                                        break
+                            if ret_flag:
+                                break
+                        print("broke")
+                        if ret_flag:
+                            print("breaking")
+                            break
+            if ret_flag: 
+                break
+                                    
+    return False
+     
 
 def endgame(screen,high,won=True):
     background = BackgroundImage('data/background.png',[0,0])
