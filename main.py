@@ -62,21 +62,20 @@ def endgame(screen,high,won=True):
     with open('data/high_score.txt',"r+") as f:
         s=f.readline()
         score = int(s)
+        print(str(score) + " "+str(high))
         if(score<high):
             f.seek(0)
             f.truncate()
-            f.write(str(score+1))
+            f.write(str(high))
         f.close()
         
     #render text
     if won:
-        top_text = font.render('You Win!', True, white, black) 
-        score_text = font.render('High Score: '+str(score), True, white, black)
-        avatar, avatar_rect = load_image(hero.py)
+        top_text = font.render('You Win!', True, white, black)  
     else:
         top_text = font.render('Defeat!', True, white, black)
-        score_text = font.render('High Score: '+str(score), True, white, black) 
     continue_text = font.render('Continue?', True, white, black)
+    score_text = font.render('High Score: '+str(score), True, white, black)
     
     top_rect=top_text.get_rect(center=(width/2,height/2))
     score_rect=score_text.get_rect(center=(width/2,height/2+32))

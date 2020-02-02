@@ -21,11 +21,12 @@ class Card(pygame.sprite.Sprite):
             self.selected = True
         
             
-    
+    def retract (self):
+        self.rect.topleft = (self.rect.topleft[0],self.rect.topleft[1]+20) 
     def set_slot(self, slot: int):
         self.slot = slot
         self.update()
-    
+
             
     def update(self): 
         screen = pygame.display.get_surface()
