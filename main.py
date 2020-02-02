@@ -44,7 +44,7 @@ def main():
        a loop until the function returns."""
     # Initialize Everything
     pygame.init()
-    screen = pygame.display.set_mode((600, 6b 00),pygame.RESIZABLE)
+    screen = pygame.display.set_mode((600, 600),pygame.RESIZABLE)
     pygame.display.set_caption("Culling Card")
     pygame.mouse.set_visible(1)
 
