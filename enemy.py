@@ -17,7 +17,7 @@ class Enemy(pygame.sprite.Sprite):
    
         
     def attack(self):
-        print("attack")
+        pass
         
     def update(self,dmg=0):
         screen = pygame.display.get_surface()

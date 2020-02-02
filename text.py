@@ -15,7 +15,6 @@ class Text:
         
         width = screen.get_width()/2
         height = screen.get_height()/2
-        print(str(width)+" "+str(height))
         text = self.font.render(self.text,True,self.c1,self.c2)
         text_rect = text.get_rect(center=(self.x+width,self.y+height))
         screen.blit(text,text_rect)
