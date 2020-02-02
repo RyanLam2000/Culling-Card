@@ -1,12 +1,13 @@
 # example usage of deck, hand, discard, drawing
 from card import Card
 from deck import Deck
+import pygame
 
 deck = Deck()
 hand = []
 discard = []
 
-drawn_cards = deck.drawN(5) # returns list
+drawn_cards = deck.draw(5) # returns list
 hand.extend(drawn_cards)
 
 while (True):
