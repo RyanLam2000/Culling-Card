@@ -69,7 +69,8 @@ def main():
     health = Health(screen)
     energy = Energy(screen)
     turn_button = Button(background,"End Turn",.88,.8)
-
+    
+    
     all_sprites = pygame.sprite.RenderPlain((hero, enemy))
     
     ui_elements = [health,energy,turn_button]

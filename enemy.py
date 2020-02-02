@@ -7,25 +7,37 @@ class Enemy(pygame.sprite.Sprite):
     
     def __init__(self, img):
         pygame.sprite.Sprite.__init__(self)  # call Sprite intializer
+        self.health = 100 
         self.img = img
         self.update()
+  
         #Load image and scale down
    
         
     def attack(self):
         print("attack")
         
-    def update(self):
+    def update(self,dmg=0):
+        self.health -= dmg
         self.full_img = load_image(self.img, -1)[0]
         self.image = pygame.transform.scale(self.full_img,(150,150))
-        #Card hitbox
+
+
         self.rect = self.image.get_rect()
         
         screen = pygame.display.get_surface()
         self.area = screen.get_rect()
  
-        #set position = width * slot
+        #set position = 80vw,50vh
         self.card_width = self.image.get_size()[0];
         self.rect.topleft = (screen.get_width()*.8), screen.get_size()[1]*.5
+        
+        #Display health 
+        font = pygame.font.Font(None, 36)
+        font.set_underline(1)
+        self.text = font.render("HP:"+str(self.health), 1, (255, 0, 0))
+        text_center = (self.rect.topleft[0]+30,self.rect.topleft[1]+10)
+        textpos = self.text.get_rect(center=text_center)
+        screen.blit(self.text, textpos)
     
         
