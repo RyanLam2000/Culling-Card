@@ -145,16 +145,16 @@ def main():
     
     while going:
         clock.tick(60)  
-        
+  
         deck.draw_n(5, hand, discard)
         all_sprites.add(hand)
+        print(len(hand))
         cards.add(hand)
-            
         redraw_screen(screen, ui_elements, all_sprites)
         pygame.display.flip()
         
         # Handle Input Events
-        while player_turn:# turn doesn't end until player clicks end turn
+        while player_turn and energy.energy>0:# turn doesn't end until player clicks end turn
             for event in pygame.event.get():
                 if event.type == QUIT:
                     player_turn = False
@@ -169,15 +169,17 @@ def main():
                         hand = []
                         player_turn = False
                     else:
+
                         for card in hand:
                             if card.rect.collidepoint(pos):
                                 hand.remove(card)
                                 card.kill()
                                 discard.append(card)
-                                
+                                energy.update(-card.en_cost)
                                 card.clicked(hero, enemy, deck, hand, discard)                            
                                 cards.add(hand)
                                 all_sprites.add(hand)
+
                         redraw_screen(screen,ui_elements,all_sprites,True)
                         pygame.display.flip()
 
@@ -202,6 +204,7 @@ def main():
                     redraw_screen(screen,ui_elements,all_sprites)
                     pygame.display.flip()
                  
+        energy.energy = min(energy.energy+20,100)
         enemy.attack()
         player_turn = True
         
