@@ -5,6 +5,7 @@ class BlueAttack(Card):
         super().__init__(img = "attack_card_blue.jpg")
         
     def clicked(self, p, mob):
+        super().clicked()
         if mob.type == "green":
             mob.health -= 3
         elif mob.type == "red":
