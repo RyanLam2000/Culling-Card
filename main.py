@@ -13,6 +13,7 @@ from deck import Deck
 from bg_image import BackgroundImage
 from get_enemy import get_enemy
 from text import Text
+from cards import *
 
 
 white = (255, 255, 255) 
@@ -78,6 +79,7 @@ def startgame(screen):
     menu_text = [cont_rect,title_text,score_text,streak_rect]
 
     while True:
+
         ret_flag = False
         while True:
             for event in pygame.event.get():
@@ -88,6 +90,7 @@ def startgame(screen):
                     if cont_rect.rect.collidepoint(pos): # player clicked end turn
                         return True
                     elif streak_rect.rect.collidepoint(pos): 
+
                         background = BackgroundImage('data/background.jpg',[0,0])
                         screen.fill([255, 255, 255])
                         screen.blit(background.image, background.rect)
@@ -119,7 +122,6 @@ def startgame(screen):
 #                                         pygame.display.set_mode((800,600),pygame.NOFRAME)
                                         return "sm"
                                 elif event.type == RESIZABLE:
-                                    print("res resize")
                                     #redefine screen and fit background to screen
                                     width,height = event.size
                                     if width<600:
@@ -138,8 +140,8 @@ def startgame(screen):
 #                                                                 
                             if ret_flag:
                                 break
-                        if ret_flag:
-                            break
+                    if ret_flag:
+                        break
                 elif event.type == RESIZABLE:
                     #redefine screen and fit background to screen
                     width,height = event.size
@@ -157,7 +159,14 @@ def startgame(screen):
                     pygame.display.flip()
                                                      
          
-            if ret_flag: 
+            if ret_flag:
+                background = BackgroundImage('data/background.jpg',[0,0])
+                screen.fill([255, 255, 255])
+                screen.blit(background.image, background.rect)
+                for txt in menu_text:
+                    txt.update(screen)
+                
+                pygame.display.flip()
                 break
                                      
     return False
@@ -254,6 +263,7 @@ def main():
 
     # Prepare Game Objects
     score = 0
+    mob_mult = 0
     clock = pygame.time.Clock()
     hero = Hero()
     enemy = get_enemy()
@@ -317,13 +327,23 @@ def main():
                         for card in hand.copy():
                             if card.rect.collidepoint(pos):
                                 if energy.energy<=0:
-                                    alert(screen,"Out of Energy",2)
+                                    alert(screen,"Out of Energy!", 1)
                                 else:
                                     hand.remove(card)
                                     card.kill()
                                     discard.append(card)
+                                    if (type(card) == draw_card.DrawCard):
+                                        alert(screen, "Player drew two cards!", 1)
+                                    elif (type(card) == blue_attack.BlueAttack and enemy.type == "red") or (type(card) == green_attack.GreenAttack and enemy.type == "blue") or (type(card) == red_attack.RedAttack and enemy.type == "green"):
+                                        alert(screen, "Player dealt 8 damage! It was super effective!", 1)
+                                    elif (type(card) == red_attack.RedAttack and enemy.type == "red") or (type(card) == blue_attack.BlueAttack and enemy.type == "blue") or (type(card) == green_attack.GreenAttack and enemy.type == "green"):
+                                        alert(screen, "Player dealt 5 damage!", 1)
+                                    elif (type(card) == green_attack.GreenAttack and enemy.type == "red") or (type(card) == red_attack.RedAttack and enemy.type == "blue") or (type(card) == blue_attack.BlueAttack and enemy.type == "green"):
+                                        alert(screen, "Player dealt 3 damage! It was not very effective...", 1)
+                                    elif (type(card) == defend_card.DefendCard):
+                                        alert(screen, "Player setup 2 block!", 1)
                                     energy.update(-card.en_cost)
-                                    card.clicked(hero, enemy, deck, hand, discard)                            
+                                    card.clicked(hero, enemy, deck, hand, discard)   
                                     cards.add(hand)
                                     all_sprites.add(hand)
                                     break
@@ -335,15 +355,17 @@ def main():
                             if endgame(screen,False):
                                 pass
                         elif enemy.health <=0:
+                            alert(screen, "Player killed the enemy!", 1)
                             score += 50
-                            if endgame(screen,score,True):
-                                enemy.kill()
-                                enemy = get_enemy(score)
-                                ui_elements[-1] = enemy
-                                energy.energy = 3
-                                all_sprites.add(enemy)
-                                redraw_screen(screen,ui_elements,all_sprites)
-                                pygame.display.flip()
+                            mob_mult += 1
+#                             if endgame(screen,score,True):
+                            enemy.kill()
+                            enemy = get_enemy(mob_mult)
+                            ui_elements[-2] = enemy
+                            energy.energy = 3
+                            all_sprites.add(enemy)
+                            redraw_screen(screen,ui_elements,all_sprites)
+                            pygame.display.flip()
 
                 elif event.type == RESIZABLE and not fs:
                     #redefine screen and fit background to screen
@@ -356,13 +378,17 @@ def main():
                                                       pygame.RESIZABLE|HWSURFACE|DOUBLEBUF)
                     redraw_screen(screen,ui_elements,all_sprites)
                     pygame.display.flip()
+        if (not going):
+            break
         energy.energy = 3
         enemy.attack()
         dmg_remaining = enemy.pow - hero.defense
         if (dmg_remaining > 0):
+            alert(screen, f"Player took {dmg_remaining} damage.", 1)
             health.update(-dmg_remaining)
         else:
             hero.defense = hero.defense - enemy.pow
+            alert(screen, f"Enemy hit player's shield for {enemy.pow} damage.", 1)
         hero.defense = 0
         player_turn = True
         
@@ -373,7 +399,7 @@ def main():
             enemy.kill()
             enemy = get_enemy()
             all_sprites.add(enemy)
-            ui_elements[-1] = enemy
+            ui_elements[-2] = enemy
             deck.merge(discard) 
             discard.clear()
 
