@@ -21,7 +21,7 @@ from energy_bar import Energy
 from button import Button
 from deck import Deck
 from cards.red_attack import RedAttack
-
+from bg_image import BackgroundImage
 
 def load_sound(name):
     class NoneSound:
@@ -44,24 +44,25 @@ def main():
        a loop until the function returns."""
     # Initialize Everything
     pygame.init()
-    screen = pygame.display.set_mode((800, 700),pygame.RESIZABLE)
+    screen = pygame.display.set_mode((600, 6b 00),pygame.RESIZABLE)
     pygame.display.set_caption("Culling Card")
     pygame.mouse.set_visible(1)
 
     # Create The Backgound
-    background = pygame.Surface(screen.get_size())
-    background = background.convert()
-    background.fill((250, 250, 250))
+    background = BackgroundImage('data/background.png',[0,0])
+    screen.fill([255, 255, 255])
+    screen.blit(background.image, background.rect)
 
     # Put Text On The Background, Centered
+
     if pygame.font:
         font = pygame.font.Font(None, 36)
         text = font.render("Culling Card", 1, (10, 10, 10))
-        textpos = text.get_rect(centerx=background.get_width() / 2)
-        background.blit(text, textpos)
+        textpos = text.get_rect(centerx=screen.get_width() / 2)
+        screen.blit(text, textpos)
 
     # Display The Background
-    screen.blit(background, (0, 0))
+    screen.blit(background.image, (0, 0))
     pygame.display.flip()
 
     # Prepare Game Objects
@@ -74,7 +75,7 @@ def main():
     hand = []
     discard = []
 
-    turn_button = Button(background,"End Turn",.88,.8)
+    turn_button = Button(background.image,"End Turn",.88,.8)
     
     
     all_sprites = pygame.sprite.RenderPlain((hero, enemy))
@@ -121,11 +122,13 @@ def main():
                     #redefine screen and fit background to screen
                     surface = pygame.display.set_mode((event.w, event.h),
                                                       pygame.RESIZABLE)
-                    background = pygame.Surface(surface.get_size())
-                    background = background.convert()    
-                    background.fill((250, 250, 250))
-                    turn_button.update(background)
-                    screen.blit(background,(0,0))
+                    
+                    background = BackgroundImage('data/background.png',[0,0])
+                    screen.fill([255, 255, 255])
+                    
+                    turn_button.update(background.image)
+                    screen.blit(background.image, background.rect)
+                 
                     
                     #re-render all objects
                     for element in ui_elements:
