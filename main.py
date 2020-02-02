@@ -13,7 +13,14 @@ from button import Button
 from deck import Deck
 from cards.red_attack import RedAttack
 from bg_image import BackgroundImage
+from pygame.examples.aliens import load_image
 
+
+white = (255, 255, 255) 
+green = (0, 255, 0) 
+blue = (0, 0, 128) 
+black = (0,0,0)
+  
 # def load_sound(name):
 #     class NoneSound:
 #         def play(self):
@@ -43,7 +50,53 @@ def redraw_screen(screen,ui_elements,all_sprites,click = False):
             sprite.update()
     all_sprites.draw(screen)
 
-
+def endgame(screen,high,won=True):
+    background = BackgroundImage('data/background.png',[0,0])
+    screen.fill([255, 255, 255])
+    screen.blit(background.image, background.rect)
+    font = pygame.font.Font(None, 32) 
+    width = screen.get_width()
+    height = screen.get_height()
+    
+    #update high score
+    with open('data/high_score.txt',"r+") as f:
+        s=f.readline()
+        score = int(s)
+        if(score<high):
+            f.seek(0)
+            f.truncate()
+            f.write(str(score+1))
+        f.close()
+        
+    #render text
+    if won:
+        top_text = font.render('You Win!', True, white, black) 
+        score_text = font.render('High Score: '+str(score), True, white, black)
+        avatar, avatar_rect = load_image(hero.py)
+    else:
+        top_text = font.render('Defeat!', True, white, black)
+        score_text = font.render('High Score: '+str(score), True, white, black) 
+    continue_text = font.render('Continue?', True, white, black)
+    
+    top_rect=top_text.get_rect(center=(width/2,height/2))
+    score_rect=score_text.get_rect(center=(width/2,height/2+32))
+    cont_rect = continue_text.get_rect(center=(width/2,height/2+64))
+    
+    screen.blit(top_text,top_rect)
+    screen.blit(score_text,score_rect)
+    screen.blit(continue_text,cont_rect)
+  
+    pygame.display.flip()
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                exit()
+            elif event.type == MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                if cont_rect.collidepoint(pos): # player clicked end turn
+                    return True
+    return False
+    
 
 
 def main():
@@ -61,19 +114,12 @@ def main():
     screen.fill([255, 255, 255])
     screen.blit(background.image, background.rect)
 
-    # Put Text On The Background, Centered
-
-    if pygame.font:
-        font = pygame.font.Font(None, 36)
-        text = font.render("Culling Card", 1, (10, 10, 10))
-        textpos = text.get_rect(centerx=screen.get_width() / 2)
-        screen.blit(text, textpos)
-
     # Display The Background
     screen.blit(background.image, (0, 0))
     pygame.display.flip()
 
     # Prepare Game Objects
+    score = 0
     clock = pygame.time.Clock()
     hero = Hero()
     enemy = Enemy(img = "enemy.png")
@@ -137,25 +183,34 @@ def main():
                         discard.extend(hand)
                         hand = []
                         player_turn = False 
-                        print("skipped a turn")
+
                     else:
                         clicked = [s for s in cards if s.rect.collidepoint(pos)]
                         for card in clicked: 
-                            card.clicked(hero, enemy)
+                            card.clicked(hero, enemy, deck, hand, discard)       
                         redraw_screen(screen,ui_elements,all_sprites,True)
                         pygame.display.flip()
-
-                 
+                        if health.health <= 0:
+                            if endgame(screen,False):
+                                pass
+                        elif enemy.health <=0:
+                            score += 1
+                            if endgame(screen,score,True):
+                                enemy.health = 50*score
+                                for card in cards:
+                                    if card.selected:
+                                        card.selected = False
+                                        card.retract()
+                                redraw_screen(screen,ui_elements,all_sprites,True)
+                                pygame.display.flip()
                 elif event.type == RESIZABLE:
                     #redefine screen and fit background to screen
                     surface = pygame.display.set_mode((event.w, event.h),
                                                       pygame.RESIZABLE)
                     redraw_screen(screen,ui_elements,all_sprites)
-                    pygame.display.flip()
-                 
+                    pygame.display.flip()             
 
-        enemy.attack()
-         
+        enemy.attack()         
         player_turn = True
 
         screen.blit(background.image, background.rect)
@@ -165,7 +220,6 @@ def main():
             going = False
         all_sprites.draw(screen)
        
-
     pygame.quit()
 
 
