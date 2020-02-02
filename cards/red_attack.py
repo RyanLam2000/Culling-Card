@@ -4,7 +4,8 @@ class RedAttack(Card):
     def __init__(self, slot = -1):
         super().__init__(slot = slot, img = "attack_card_red.jpg")
         
-    def clicked(self, p, mob):
+    def clicked(self, p, mob, deck, hand, discard):
+        super().clicked()
         if mob.type == "blue":
             mob.health -= 3
         elif mob.type == "green":

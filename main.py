@@ -1,12 +1,3 @@
-#!/usr/bin/env python
-"""
-This simple example is used for the line-by-line tutorial
-that comes with pygame. It is based on a 'popular' web banner.
-Note there are comments here, but for the full explanation,
-follow along in the tutorial.
-"""
-
-
 # Import Modules
 import os, pygame, time
 from pygame.locals import *
@@ -23,20 +14,37 @@ from deck import Deck
 from cards.red_attack import RedAttack
 from bg_image import BackgroundImage
 
-def load_sound(name):
-    class NoneSound:
-        def play(self):
-            pass
+# def load_sound(name):
+#     class NoneSound:
+#         def play(self):
+#             pass
+# 
+#     if not pygame.mixer or not pygame.mixer.get_init():
+#         return NoneSound()
+# #     fullname = os.path.join(data_dir, name)
+# #     try:
+# #         sound = pygame.mixer.Sound(fullname)
+# #     except pygame.error:
+# #         print("Cannot load sound: %s" % fullname)
+# #         raise SystemExit(str(geterror()))
+#     return
 
-    if not pygame.mixer or not pygame.mixer.get_init():
-        return NoneSound()
-#     fullname = os.path.join(data_dir, name)
-#     try:
-#         sound = pygame.mixer.Sound(fullname)
-#     except pygame.error:
-#         print("Cannot load sound: %s" % fullname)
-#         raise SystemExit(str(geterror()))
-    return
+def redraw_screen(screen,ui_elements,all_sprites,click = False):
+    
+    background = BackgroundImage('data/background.png',[0,0])
+    screen.fill([255, 255, 255])
+    screen.blit(background.image, background.rect)
+    
+    #re-render all objects
+    for element in ui_elements:
+        element.update()
+    if(not click):
+        for sprite in all_sprites:
+            sprite.update()
+    all_sprites.draw(screen)
+
+
+
 
 def main():
     """this function is called when the program starts.
@@ -74,19 +82,13 @@ def main():
     deck = Deck()
     hand = []
     discard = []
-
-    turn_button = Button(background.image,"End Turn",.88,.8)
-    
+    turn_button = Button(screen,"End Turn",.88,.8)
     
     all_sprites = pygame.sprite.RenderPlain((hero, enemy))
     
-    ui_elements = [health,energy,turn_button]
+    ui_elements = [health,energy,turn_button,enemy]
     #used when checking for clicks on cards, avoid checking clicks on non card elements
     cards = pygame.sprite.RenderPlain()
-    for i in range(0,5): 
-        card=RedAttack(i)
-        all_sprites.add(card)
-        cards.add(card)
     
     # Main Loop
     going = True
@@ -95,13 +97,31 @@ def main():
     
     # Draw Everything
     all_sprites.update()
-    turn_button.update()
-
     all_sprites.draw(screen)
 
     
     while going:
         clock.tick(60)  
+        drawn_cards = deck.draw_n(5)
+        hand.extend(drawn_cards)
+        num_drawn = len(hand)
+        
+        # If deck is empty, discard pile goes back to deck
+        if (num_drawn < 5):
+            deck.merge(discard)
+            discard = []
+            # Cards left to draw
+            to_draw = 5 - num_drawn
+            hand.extend(deck.draw_n(to_draw))
+        
+        for i in range(0, 5):
+            hand[i].set_slot(i)
+            all_sprites.add(hand[i])
+            cards.add(hand[i])
+            
+        cards.draw(screen)
+        pygame.display.flip()
+        
         # Handle Input Events
         while player_turn:# turn doesn't end until player clicks end turn
             for event in pygame.event.get():
@@ -112,47 +132,38 @@ def main():
                 elif event.type == MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
                     if turn_button.rect.collidepoint(pos): # player clicked end turn
-                        player_turn = False 
-                        print("skipped a turn")
+                        all_sprites.remove(hand)
+                        cards.empty()
+                        discard.extend(hand)
+                        hand = []
+                        player_turn = False
                     else:
                         clicked = [s for s in cards if s.rect.collidepoint(pos)]
                         for card in clicked: 
-                            card.clicked(hero, enemy)       
+                            card.clicked(hero, enemy, deck, hand, discard)       
+                        redraw_screen(screen,ui_elements,all_sprites,True)
+                        pygame.display.flip()
+
+                 
                 elif event.type == RESIZABLE:
                     #redefine screen and fit background to screen
                     surface = pygame.display.set_mode((event.w, event.h),
                                                       pygame.RESIZABLE)
-                    
-                    background = BackgroundImage('data/background.png',[0,0])
-                    screen.fill([255, 255, 255])
-                    
-                    turn_button.update(background.image)
-                    screen.blit(background.image, background.rect)
-                 
-                    
-                    #re-render all objects
-                    for element in ui_elements:
-                        element.update()
-                    for sprite in all_sprites:
-                        sprite.update()
-                    all_sprites.draw(screen)
+                    redraw_screen(screen,ui_elements,all_sprites)
                     pygame.display.flip()
+                 
 
         enemy.attack()
          
         player_turn = True
 
-        screen.blit(background, (0,0))
+        screen.blit(background.image, background.rect)
         all_sprites.update()
-        health.update(-5)
-        energy.update(-5)
-        turn_button.update()
 
         if health.isDead():
             going = False
         all_sprites.draw(screen)
        
-        pygame.display.flip()
 
     pygame.quit()
 
