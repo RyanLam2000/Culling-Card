@@ -7,7 +7,7 @@ All other assets are self-made
 ### Pygame
  Instructions for installing pygame can be found [here](https://www.pygame.org/wiki/GettingStarted)
  - Run the following shell command:
- '''
+ '''bash
  python3 -m pip install -U pygame --user
  '''
  - Install your favorite Python IDE (this project was developed using LiClipse/Eclipse)
