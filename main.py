@@ -67,7 +67,7 @@ def main():
     # Prepare Game Objects
     clock = pygame.time.Clock()
     hero = Hero()
-    enemy = Enemy("enemy.png")
+    enemy = Enemy(img = "enemy.png")
     health = Health(screen)
     energy = Energy(screen)
     deck = Deck()
