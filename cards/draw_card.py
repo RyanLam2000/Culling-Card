@@ -6,5 +6,6 @@ class DrawCard(Card):
         drawn_cards = deck.draw_n(2)
         hand.extend(drawn_cards)
         num_drawn = len(hand)
+        self.en_cost =20
     def retract(self):
         super().retract()

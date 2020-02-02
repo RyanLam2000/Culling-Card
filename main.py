@@ -168,7 +168,7 @@ def main():
         pygame.display.flip()
         
         # Handle Input Events
-        while player_turn:# turn doesn't end until player clicks end turn
+        while player_turn and energy.energy>0:# turn doesn't end until player clicks end turn
             for event in pygame.event.get():
                 if event.type == QUIT:
                     player_turn = False
@@ -186,6 +186,7 @@ def main():
                         clicked = [s for s in cards if s.rect.collidepoint(pos)]
                         for card in clicked: 
                             card.clicked(hero, enemy, deck, hand, discard)       
+                            energy.update(-card.en_cost)
                         redraw_screen(screen,ui_elements,all_sprites,True)
                         pygame.display.flip()
                         if health.health <= 0:
