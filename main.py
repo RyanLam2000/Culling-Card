@@ -77,14 +77,17 @@ def endgame(screen,high,won=True):
         top_text = font.render('Defeat!', True, white, black)
     continue_text = font.render('Continue?', True, white, black)
     score_text = font.render('High Score: '+str(score), True, white, black)
+    streak_text = font.render('Streak: '+str(high),True,white,black)
     
+    streak_rect = streak_text.get_rect(center=(width/2,height/2+64))
     top_rect=top_text.get_rect(center=(width/2,height/2))
     score_rect=score_text.get_rect(center=(width/2,height/2+32))
-    cont_rect = continue_text.get_rect(center=(width/2,height/2+64))
+    cont_rect = continue_text.get_rect(center=(width/2,height/2+96))
     
     screen.blit(top_text,top_rect)
     screen.blit(score_text,score_rect)
     screen.blit(continue_text,cont_rect)
+    screen.blit(streak_text,streak_rect)
   
     pygame.display.flip()
     while True:
@@ -192,11 +195,7 @@ def main():
                             score += 1
                             if endgame(screen,score,True):
                                 enemy.health = 50*score
-                                for card in cards:
-                                    if card.selected:
-                                        card.selected = False
-                                        card.retract()
-                                redraw_screen(screen,ui_elements,all_sprites,True)
+                                redraw_screen(screen,ui_elements,cards,True)
                                 pygame.display.flip()
 
                 elif event.type == RESIZABLE:
