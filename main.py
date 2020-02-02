@@ -98,7 +98,16 @@ def endgame(screen,high,won=True):
                     return True
     return False
     
-
+def out_of_energy_alert(screen): 
+    width = screen.get_width()
+    height = screen.get_height()
+    font = pygame.font.Font(None, 32)      
+    streak_text = font.render("Out of Energy!",True,white,black)
+    streak_rect = streak_text.get_rect(center=(width/2,height/2+64))
+    screen.blit(streak_text,streak_rect)
+    pygame.display.flip()
+    time.sleep(2)
+    
 
 def main():
     """this function is called when the program starts.
@@ -202,7 +211,8 @@ def main():
                                                       pygame.RESIZABLE)
                     redraw_screen(screen,ui_elements,all_sprites)
                     pygame.display.flip()
-                 
+        if energy.energy<=0:
+            out_of_energy_alert(screen)
         energy.energy = min(energy.energy+20,100)
         enemy.attack()
         player_turn = True
