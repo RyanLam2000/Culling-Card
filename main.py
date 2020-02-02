@@ -8,7 +8,7 @@ follow along in the tutorial.
 
 
 # Import Modules
-import os, pygame
+import os, pygame, time
 from pygame.locals import *
 from pygame.compat import geterror
 from card import Card
@@ -67,42 +67,45 @@ def main():
     # Prepare Game Objects
     clock = pygame.time.Clock()
     hero = Hero()
-
     enemy = Enemy("enemy.png")
     health = Health(screen)
     energy = Energy(screen)
+<<<<<<< HEAD
     deck = Deck()
     hand = []
     discard = []
 
     turn_button = Button(background,"End Turn",.5,.1)
+=======
+    turn_button = Button(background,"End Turn",.88,.8)
+>>>>>>> 9b227f9c1d5134cb3f7313d121fb453bcd04ad8f
 
     all_sprites = pygame.sprite.RenderPlain((hero, enemy))
+    
+    ui_elements = [health,energy,turn_button]
     #used when checking for clicks on cards, avoid checking clicks on non card elements
     cards = pygame.sprite.RenderPlain()
     for i in range(0,5): 
         card=RedAttack(i)
         all_sprites.add(card)
         cards.add(card)
-        
+    
     # Main Loop
     going = True
-    enemy_turn = True
+    enemy_turn = False
     player_turn = True
     
     # Draw Everything
-   #screen.blit(background, (0, 0))
     all_sprites.update()
-    turn_button.update(screen)
+    turn_button.update()
+
     all_sprites.draw(screen)
-    pygame.display.flip()
+
     
     while going:
         clock.tick(60)  
-        
         # Handle Input Events
-            
-        while player_turn:                  # turn doesn't end until player clicks end turn
+        while player_turn:# turn doesn't end until player clicks end turn
             for event in pygame.event.get():
                 if event.type == QUIT:
                     player_turn = False
@@ -116,43 +119,40 @@ def main():
                     else:
                         clicked = [s for s in cards if s.rect.collidepoint(pos)]
                         for card in clicked: 
-                            card.clicked(hero, enemy)
-                            
+                            card.clicked(hero, enemy)       
                 elif event.type == RESIZABLE:
-                #redefine screen and fit background to screen
+                    #redefine screen and fit background to screen
                     surface = pygame.display.set_mode((event.w, event.h),
                                                       pygame.RESIZABLE)
-                    background = pygame.Surface(screen.get_size())
+                    background = pygame.Surface(surface.get_size())
                     background = background.convert()    
                     background.fill((250, 250, 250))
+                    turn_button.update(background)
+                    screen.blit(background,(0,0))
                     
                     #re-render all objects
-                    screen.blit(background, (0,0))
-                    health.updates(screen)
-                    turn_button.update(screen)
-                    energy.updates(screen)
+                    for element in ui_elements:
+                        element.update()
                     for sprite in all_sprites:
                         sprite.update()
                     all_sprites.draw(screen)
                     pygame.display.flip()
-        
+
         enemy.attack()
-        
+         
         player_turn = True
-        
-        
+
         screen.blit(background, (0,0))
         all_sprites.update()
-        health.updates(screen, -5)
-        energy.updates(screen, -5)
-        turn_button.update(screen)
+        health.update(-5)
+        energy.update(-5)
+        turn_button.update()
+
         if health.isDead():
             going = False
         all_sprites.draw(screen)
        
         pygame.display.flip()
-
-        
 
     pygame.quit()
 

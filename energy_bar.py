@@ -7,15 +7,16 @@ class Energy():
     
     def __init__(self,screen):
         self.energy = 100
-       #self.background = bg
-        self.updates(screen)
+        self.screen=screen
+        self.update()
         
-    def updates(self, screen, damage = 0):
+    def update(self, damage = 0):
+
         self.energy += damage
         font = pygame.font.Font(None, 36)
         self.text = font.render("EN:"+str(self.energy), 1, (0, 0, 255))
-        textpos = self.text.get_rect(centerx=screen.get_width()*.9,centery=screen.get_height()*.9)
-        screen.blit(self.text, textpos)
-    
+        textpos = self.text.get_rect(centerx=self.screen.get_width()*.9,centery=self.screen.get_height()*.9)
+        self.screen.blit(self.text, textpos)
+
 
        

@@ -28,7 +28,7 @@ class Deck:
         
     # Number of remaining cards in the deck
     def __len__(self):
-        return sum(self.deck.values())
+        return len(self.deck)
     
     
     def draw(self):
@@ -38,7 +38,7 @@ class Deck:
         return self.deck.pop(-1)
     
     
-    def drawN(self, num_cards: int):
+    def draw_n(self, num_cards: int):
         if (num_cards > len(self)):
             drawn_cards = self.deck
             self.deck = list()
