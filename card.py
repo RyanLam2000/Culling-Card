@@ -5,10 +5,11 @@ from helpers import *
 
 class Card(pygame.sprite.Sprite):
     
-    def __init__(self,slot=None):
+    def __init__(self,slot=-1, img = "download.png"):
         pygame.sprite.Sprite.__init__(self)  # call Sprite intializer
         #position in deck
-        self.slot = slot 
+        self.slot = slot
+        self.img = img
         self.update()
         
     
@@ -23,7 +24,7 @@ class Card(pygame.sprite.Sprite):
         screen = pygame.display.get_surface()
         self.area = screen.get_rect()
         #Load image and scale down
-        self.full_img = load_image("download.png", -1)[0]
+        self.full_img = load_image(self.img, -1)[0]
         self.image = pygame.transform.scale(self.full_img,(int(.1*screen.get_width()),int(.15*screen.get_width())))
         #Card hitbox
         self.rect = self.image.get_rect()

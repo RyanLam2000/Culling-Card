@@ -10,7 +10,7 @@ import random
 
 def add_new_cards(deck:[Card], card_type, num):
     for i in range(num):
-        deck.append(card_type())
+        deck.append(card_type(i))
 
 class Deck:
     def __init__(self):

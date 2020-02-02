@@ -19,6 +19,8 @@ from helpers import *
 from health_bar import Health
 from energy_bar import Energy
 from button import Button
+from deck import Deck
+from cards.red_attack import RedAttack
 
 
 def load_sound(name):
@@ -69,6 +71,9 @@ def main():
     enemy = Enemy("enemy.png")
     health = Health(screen)
     energy = Energy(screen)
+    deck = Deck()
+    hand = []
+    discard = []
 
     turn_button = Button(background,"End Turn",.5,.1)
 
@@ -76,7 +81,7 @@ def main():
     #used when checking for clicks on cards, avoid checking clicks on non card elements
     cards = pygame.sprite.RenderPlain()
     for i in range(0,5): 
-        card=Card(i)
+        card=RedAttack(i)
         all_sprites.add(card)
         cards.add(card)
         

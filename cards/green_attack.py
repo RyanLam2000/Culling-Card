@@ -1,6 +1,9 @@
 from card import Card
 
 class GreenAttack(Card):
+    def __init__(self, slot = -1):
+        super().__init__(img = "attack_card_green.jpeg")
+        
     def clicked(self, p, mob):
         if mob.type == "red":
             mob.health -= 3
