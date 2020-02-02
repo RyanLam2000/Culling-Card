@@ -26,6 +26,6 @@ class Enemy(pygame.sprite.Sprite):
  
         #set position = width * slot
         self.card_width = self.image.get_size()[0];
-        self.rect.topleft = (screen.get_width()*.7), screen.get_size()[1]*.5
+        self.rect.topleft = (screen.get_width()*.8), screen.get_size()[1]*.5
     
         

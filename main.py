@@ -70,7 +70,7 @@ def main():
     health = Health(screen)
     energy = Energy(screen)
 
-    turn_button = Button(background,"End Turn",.5,.1)
+    turn_button = Button(background,"End Turn",.88,.8)
 
     all_sprites = pygame.sprite.RenderPlain((hero, enemy))
     #used when checking for clicks on cards, avoid checking clicks on non card elements
@@ -86,7 +86,6 @@ def main():
     player_turn = True
     
     # Draw Everything
-   #screen.blit(background, (0, 0))
     all_sprites.update()
     turn_button.update(screen)
     all_sprites.draw(screen)

@@ -14,7 +14,7 @@ class Health():
         self.health += damage
         font = pygame.font.Font(None, 36)
         self.text = font.render("HP:"+str(self.health), 1, (255, 0, 0))
-        textpos = self.text.get_rect(centerx=screen.get_width()*.1,centery=screen.get_height()*.9)
+        textpos = self.text.get_rect(centerx=screen.get_width()*.1,centery=screen.get_height()*.85)
         screen.blit(self.text, textpos)
 
     def isDead(self):
