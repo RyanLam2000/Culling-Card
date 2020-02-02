@@ -1,7 +1,7 @@
 import os, pygame
 from pygame.locals import *
 from pygame.compat import geterror
-from helpers import *
+from helpers import load_image
 
 class Enemy(pygame.sprite.Sprite):
     
