@@ -22,4 +22,5 @@ class Hero(pygame.sprite.Sprite):
  
         #set position = width * slot
         self.card_width = self.image.get_size()[0];
-        self.rect.topleft = (screen.get_width()*.05), screen.get_size()[1]*.5 - 50
+        self.rect.topleft = (screen.get_width()*.12), screen.get_size()[1]*.4
+
