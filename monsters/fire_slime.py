@@ -1,8 +1,8 @@
 from enemy import Enemy
 
-class Fire_slime(Enemy):
+class FireSlime(Enemy):
     def __init__(self):
-        super()
+        super("fire_slime.png")
         self.hp = 10
         self.power = 2
         self.type = "red"
