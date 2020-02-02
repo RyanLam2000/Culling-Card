@@ -66,13 +66,13 @@ def main():
     clock = pygame.time.Clock()
     hero = Hero()
 
-    #enemy = Enemy("enemy.png")
+    enemy = Enemy("enemy.png")
     health = Health(screen)
     energy = Energy(screen)
 
     turn_button = Button(background,"End Turn",.5,.1)
 
-    all_sprites = pygame.sprite.RenderPlain((hero))
+    all_sprites = pygame.sprite.RenderPlain((hero, enemy))
     #used when checking for clicks on cards, avoid checking clicks on non card elements
     cards = pygame.sprite.RenderPlain()
     for i in range(0,5): 
