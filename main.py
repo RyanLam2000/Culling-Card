@@ -167,7 +167,7 @@ def endgame(screen,high,won=True):
     if won:
         top_text = font.render('You Win!', True, white, black)  
     else:
-        top_text = font.render('Defeat!', True, white, black)
+        top_text = font.render('Game Over!', True, white, black)
     continue_text = font.render('Continue?', True, white, black)
     score_text = font.render('High Score: '+str(score), True, white, black)
     streak_text = font.render('Streak: '+str(high),True,white,black)
@@ -198,11 +198,11 @@ def alert(screen,string,seconds):
     height = screen.get_height()
     font = pygame.font.Font("data/dpcomic.ttf", 32)      
     streak_text = font.render(string,True,white,black)
-    streak_rect = streak_text.get_rect(center=(width/2,height/2+64))
+    streak_rect = streak_text.get_rect(center=(width/2,height/2+20))
     screen.blit(streak_text,streak_rect)
     pygame.display.flip()
     time.sleep(seconds)
-    
+
 
 def main():
     """this function is called when the program starts.
@@ -306,7 +306,7 @@ def main():
                             if endgame(screen,False):
                                 pass
                         elif enemy.health <=0:
-                            score += 1
+                            score += 50
                             if endgame(screen,score,True):
                                 enemy.kill()
                                 enemy = get_enemy(score)
@@ -338,7 +338,15 @@ def main():
         player_turn = True
         
         if health.isDead():
-            going = False       
+            going = endgame(screen, score, False)
+            score = 0   
+            health.health = 25
+            enemy.kill()
+            enemy = get_enemy()
+            all_sprites.add(enemy)
+            ui_elements[-1] = enemy
+            deck.merge(discard) 
+            discard.clear()
 
     pygame.quit()
 
