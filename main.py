@@ -201,7 +201,7 @@ def main():
         pygame.display.flip()
         
         # Handle Input Events
-        while player_turn and energy.energy>0:# turn doesn't end until player clicks end turn
+        while player_turn: # turn doesn't end until player clicks end turn
             for event in pygame.event.get():
                 if event.type == QUIT:
                     player_turn = False
@@ -216,16 +216,19 @@ def main():
                         hand = []
                         player_turn = False
                     else:
-
-                        for card in hand:
+                        for card in hand.copy():
                             if card.rect.collidepoint(pos):
-                                hand.remove(card)
-                                card.kill()
-                                discard.append(card)
-                                energy.update(-card.en_cost)
-                                card.clicked(hero, enemy, deck, hand, discard)                            
-                                cards.add(hand)
-                                all_sprites.add(hand)
+                                if energy.energy<=0:
+                                    alert(screen,"Out of Energy",2)
+                                else:
+                                    hand.remove(card)
+                                    card.kill()
+                                    discard.append(card)
+                                    energy.update(-card.en_cost)
+                                    card.clicked(hero, enemy, deck, hand, discard)                            
+                                    cards.add(hand)
+                                    all_sprites.add(hand)
+                                    break
 
                         redraw_screen(screen,ui_elements,all_sprites,True)
                         pygame.display.flip()
@@ -239,6 +242,7 @@ def main():
                                 enemy.kill()
                                 enemy = get_enemy(score)
                                 ui_elements[-1] = enemy
+                                energy.energy = 3
                                 all_sprites.add(enemy)
                                 redraw_screen(screen,ui_elements,all_sprites)
                                 pygame.display.flip()
@@ -249,9 +253,7 @@ def main():
                                                       pygame.RESIZABLE)
                     redraw_screen(screen,ui_elements,all_sprites)
                     pygame.display.flip()
-        if energy.energy<=0:
-            alert(screen,"Out of Energy",2)
-        energy.energy = min(energy.energy+20,100)
+        energy.energy = 3
         enemy.attack()
         health.update(-enemy.pow)
         player_turn = True

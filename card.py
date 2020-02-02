@@ -12,7 +12,7 @@ class Card(pygame.sprite.Sprite):
         self.img = img
         self.selected = False
         self.update()   
-        self.en_cost =20     
+        self.en_cost = 1 
     
     def clicked(self, player, enemy, deck, hand, discard):
         """Update in response to click

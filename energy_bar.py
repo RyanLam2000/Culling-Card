@@ -6,7 +6,7 @@ from helpers import *
 class Energy():
     
     def __init__(self,screen):
-        self.energy = 100
+        self.energy = 3
         self.screen=screen
         self.update()
         

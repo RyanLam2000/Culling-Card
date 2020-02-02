@@ -21,4 +21,4 @@ class Health():
         self.screen.blit(self.text, textpos)
 
     def isDead(self):
-        return self.health == 0
+        return self.health <= 0
