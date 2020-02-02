@@ -8,12 +8,9 @@ class Energy():
     def __init__(self,screen):
         self.energy = 100
         self.screen=screen
-        self.updates(0)
+        self.update()
         
-
-
-     
-    def updates(self,damage=0):
+    def update(self, damage = 0):
 
         self.energy += damage
         font = pygame.font.Font(None, 36)
