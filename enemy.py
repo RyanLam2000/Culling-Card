@@ -5,9 +5,9 @@ from helpers import load_image
 
 class Enemy(pygame.sprite.Sprite):
     
-    def __init__(self, hp=50, atk=5, attribute="Rainbow", img='enemy.png'):
+    def __init__(self, hp=50, atk=5, attribute="Rainbow", img='enemy.png', multiplier = 0):
         pygame.sprite.Sprite.__init__(self)  # call Sprite intializer
-        self.health = hp
+        self.health = int(hp * (1 + .2 * multiplier))
         self.pow = atk
         self.type = attribute
         self.img = img
@@ -35,7 +35,7 @@ class Enemy(pygame.sprite.Sprite):
         font = pygame.font.Font(None, 36)
         font.set_underline(1)
         self.text = font.render("HP:"+str(self.health), 1, (255, 0, 0))
-        text_center = (self.rect.topleft[0]+75,self.rect.topleft[1]+10)
+        text_center = (self.rect.topleft[0],self.rect.topleft[1])
         textpos = self.text.get_rect(center=text_center)
         screen.blit(self.text, textpos)
     

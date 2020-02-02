@@ -48,7 +48,6 @@ class Deck:
     
     
     def draw_n(self, num_cards: int, hand, discard):
-        print("drawing n"+str(num_cards))
         for i in range(num_cards):
             self.draw(hand, discard)
 

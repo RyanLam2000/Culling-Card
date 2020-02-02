@@ -7,7 +7,7 @@ class Health():
 
 
     def __init__(self,screen):
-        self.health = 100
+        self.health = 25
         self.screen=screen
         self.update()
 

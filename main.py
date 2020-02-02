@@ -61,7 +61,6 @@ def endgame(screen,high,won=True):
     with open('data/high_score.txt',"r+") as f:
         s=f.readline()
         score = int(s)
-        print(str(score) + " "+str(high))
         if(score<high):
             f.seek(0)
             f.truncate()
@@ -151,7 +150,6 @@ def main():
   
         deck.draw_n(5, hand, discard)
         all_sprites.add(hand)
-        print(len(hand))
         cards.add(hand)
         redraw_screen(screen, ui_elements, all_sprites)
         pygame.display.flip()
@@ -192,8 +190,11 @@ def main():
                         elif enemy.health <=0:
                             score += 1
                             if endgame(screen,score,True):
-                                enemy.health = 50*score
-                                redraw_screen(screen,ui_elements,cards,True)
+                                enemy.kill()
+                                enemy = get_enemy(score)
+                                ui_elements[-1] = enemy
+                                all_sprites.add(enemy)
+                                redraw_screen(screen,ui_elements,all_sprites)
                                 pygame.display.flip()
 
                 elif event.type == RESIZABLE:
@@ -205,6 +206,7 @@ def main():
                  
         energy.energy = min(energy.energy+20,100)
         enemy.attack()
+        health.update(-enemy.pow)
         player_turn = True
         
         if health.isDead():

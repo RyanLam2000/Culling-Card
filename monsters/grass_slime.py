@@ -1,5 +1,5 @@
 from enemy import Enemy
 
 class GrassSlime(Enemy):
-    def __init__(self):
-        super().__init__(10, 2, 'green', "PoisonSlime.png")
+    def __init__(self, multiplier = 0):
+        super().__init__(11, 3, 'green', "PoisonSlime.png", multiplier)

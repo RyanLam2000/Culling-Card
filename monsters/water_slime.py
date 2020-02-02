@@ -1,5 +1,5 @@
 from enemy import Enemy
 
 class WaterSlime(Enemy):
-    def __init__(self):
-        super().__init__(10, 2, 'blue', "IceSlime.png")
+    def __init__(self, multiplier = 0):
+        super().__init__(4, 10, 'blue', "IceSlime.png", multiplier)
