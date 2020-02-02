@@ -12,9 +12,6 @@ from button import Button
 from deck import Deck
 from bg_image import BackgroundImage
 from get_enemy import get_enemy
-from pygame.examples.video import full
-import pygame_sdl2
-pygame_sdl2.import_as_pygame()
 
 white = (255, 255, 255) 
 green = (0, 255, 0) 
