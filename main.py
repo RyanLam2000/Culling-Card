@@ -6,14 +6,12 @@ from card import Card
 from helpers import *
 from hero import Hero
 from enemy import Enemy
-from helpers import *
 from health_bar import Health
 from energy_bar import Energy
 from button import Button
 from deck import Deck
-from cards.red_attack import RedAttack
 from bg_image import BackgroundImage
-from pygame.examples.aliens import load_image
+from get_enemy import get_enemy
 
 
 white = (255, 255, 255) 
@@ -125,7 +123,7 @@ def main():
     score = 0
     clock = pygame.time.Clock()
     hero = Hero()
-    enemy = Enemy(img = "enemy.png")
+    enemy = get_enemy()
     health = Health(screen)
     energy = Energy(screen)
     deck = Deck()
