@@ -12,3 +12,5 @@ class BlueAttack(Card):
             mob.health -= 8
         else:
             mob.health -= 5
+    def retract(self):
+        super().retract()
