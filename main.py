@@ -1,12 +1,3 @@
-#!/usr/bin/env python
-"""
-This simple example is used for the line-by-line tutorial
-that comes with pygame. It is based on a 'popular' web banner.
-Note there are comments here, but for the full explanation,
-follow along in the tutorial.
-"""
-
-
 # Import Modules
 import os, pygame, time
 from pygame.locals import *
@@ -98,10 +89,6 @@ def main():
     ui_elements = [health,energy,turn_button,enemy]
     #used when checking for clicks on cards, avoid checking clicks on non card elements
     cards = pygame.sprite.RenderPlain()
-    for i in range(0,5): 
-        card=RedAttack(i)
-        all_sprites.add(card)
-        cards.add(card)
     
     # Main Loop
     going = True
@@ -115,6 +102,26 @@ def main():
     
     while going:
         clock.tick(60)  
+        drawn_cards = deck.draw_n(5)
+        hand.extend(drawn_cards)
+        num_drawn = len(hand)
+        
+        # If deck is empty, discard pile goes back to deck
+        if (num_drawn < 5):
+            deck.merge(discard)
+            discard = []
+            # Cards left to draw
+            to_draw = 5 - num_drawn
+            hand.extend(deck.draw_n(to_draw))
+        
+        for i in range(0, 5):
+            hand[i].set_slot(i)
+            all_sprites.add(hand[i])
+            cards.add(hand[i])
+            
+        cards.draw(screen)
+        pygame.display.flip()
+        
         # Handle Input Events
         while player_turn:# turn doesn't end until player clicks end turn
             for event in pygame.event.get():
@@ -125,6 +132,10 @@ def main():
                 elif event.type == MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
                     if turn_button.rect.collidepoint(pos): # player clicked end turn
+                        all_sprites.remove(hand)
+                        cards.empty()
+                        discard.extend(hand)
+                        hand = []
                         player_turn = False 
                         print("skipped a turn")
                     else:
@@ -154,7 +165,6 @@ def main():
             going = False
         all_sprites.draw(screen)
        
-        pygame.display.flip()
 
     pygame.quit()
 
