@@ -122,13 +122,16 @@ def main():
                     background.fill((250, 250, 250))
                     
                     #re-render all objects
+                    screen.blit(background, (0,0))
                     health.updates(screen)
                     turn_button.update(screen)
                     energy.updates(screen)
                     for sprite in all_sprites:
                         sprite.update()
+                    all_sprites.draw(screen)
+                    pygame.display.flip()
         
-        '''enemy.attack()'''
+        enemy.attack()
         
         player_turn = True
         
@@ -137,7 +140,7 @@ def main():
         all_sprites.update()
         health.updates(screen, -5)
         energy.updates(screen, -5)
-        turn_button.update()
+        turn_button.update(screen)
         if health.isDead():
             going = False
         all_sprites.draw(screen)
