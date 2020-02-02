@@ -29,7 +29,7 @@ class Enemy(pygame.sprite.Sprite):
         self.area = screen.get_rect()
  
         #set position = 80vw,50vh
-        self.rect.topleft = (screen.get_width()*.8), screen.get_size()[1]*.5
+        self.rect.topleft = (screen.get_width()*.8), screen.get_size()[1]*.4
         
         #Display health 
         font = pygame.font.Font("data/dpcomic.ttf", 36)
