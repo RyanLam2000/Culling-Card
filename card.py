@@ -32,6 +32,6 @@ class Card(pygame.sprite.Sprite):
  
         #set position = width * slot
         self.card_width = self.image.get_size()[0];
-        self.rect.topleft = (screen.get_width()*.25)+self.card_width*self.slot, screen.get_size()[1]-(self.image.get_height()*1.3)
+        self.rect.topleft = (screen.get_width()*.2)+self.card_width*self.slot + self.slot*10, screen.get_size()[1]-(self.image.get_height()*1.3)
         self.selected = False
        
