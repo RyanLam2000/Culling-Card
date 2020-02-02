@@ -125,10 +125,10 @@ def startgame(screen):
                                 elif event.type == RESIZABLE:
                                     #redefine screen and fit background to screen
                                     width,height = event.size
-                                    if width<600:
-                                        width=400
-                                    if height<400:
-                                        height=400
+                                    if width<1024:
+                                        width=1024
+                                    if height<768:
+                                        height=768
                                     screen = pygame.display.set_mode((width, height),RESIZABLE)
                                     background = BackgroundImage('data/background.jpg',[0,0])
                                     screen.fill([255, 255, 255])
@@ -146,10 +146,10 @@ def startgame(screen):
                 elif event.type == RESIZABLE:
                     #redefine screen and fit background to screen
                     width,height = event.size
-                    if width<600:
-                        width=400
-                    if height<400:
-                        height=400
+                    if width<1024:
+                        width=1204
+                    if height<768:
+                        height=768
                     screen = pygame.display.set_mode((width, height),RESIZABLE)
                     background = BackgroundImage('data/background.jpg',[0,0])
                     screen.fill([255, 255, 255])
@@ -380,10 +380,10 @@ def main():
                 elif event.type == RESIZABLE and not fs:
                     #redefine screen and fit background to screen
                     width,height = event.size
-                    if width<600:
-                        width=400
-                    if height<400:
-                        height=400
+                    if width<1024:
+                        width=1024
+                    if height<768:
+                        height=768
                     screen=pygame.display.set_mode((width, height),
                                                       pygame.RESIZABLE|HWSURFACE|DOUBLEBUF)
                     redraw_screen(screen,ui_elements,all_sprites)
