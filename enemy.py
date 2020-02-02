@@ -34,8 +34,12 @@ class Enemy(pygame.sprite.Sprite):
         #Display health 
         font = pygame.font.Font("data/dpcomic.ttf", 36)
         self.text = font.render("HP:"+str(self.health), 1, (255, 0, 0))
-        text_center = (self.rect.topleft[0]+(self.image.get_width()/2),int(self.rect.topleft[1])*.9)
+        text_center = (self.rect.topleft[0]+(self.image.get_width()/2),int(self.rect.topleft[1])*.8)
         textpos = self.text.get_rect(center=text_center)
         screen.blit(self.text, textpos)
+        self.text2 = font.render("Atk:"+str(self.pow), 1, (255, 0, 0))
+        text_center = (self.rect.topleft[0]+(self.image.get_width()/2),int(self.rect.topleft[1])*.9)
+        textpos = self.text2.get_rect(center=text_center)
+        screen.blit(self.text2, textpos)
     
         

@@ -17,6 +17,7 @@ from cards import *
 from shield_bar import Shield
 
 
+
 white = (255, 255, 255) 
 green = (0, 255, 0) 
 blue = (0, 0, 128) 
@@ -197,7 +198,7 @@ def endgame(screen,high,won=True):
         top_text = font.render('Game Over!', True, white, black)
     continue_text = font.render('Continue?', True, white, black)
     score_text = font.render('High Score: '+str(score), True, white, black)
-    streak_text = font.render('Streak: '+str(high),True,white,black)
+    streak_text = font.render('Score: '+str(high),True,white,black)
     
     streak_rect = streak_text.get_rect(center=(width/2,height/2+64))
     top_rect=top_text.get_rect(center=(width/2,height/2))
@@ -241,6 +242,8 @@ def main():
     height = pygame.display.Info().current_h
     screen = pygame.display.set_mode((1024,728),RESIZABLE)
     pygame.display.set_caption("Culling Card")
+    icon = pygame.image.load("data/icon.png")
+    pygame.display.set_icon(icon)
     pygame.mouse.set_visible(1)
     fs = False
     size = startgame(screen) 
@@ -408,6 +411,7 @@ def main():
             enemy = get_enemy()
             all_sprites.add(enemy)
             ui_elements[-2] = enemy
+            score_keep.update("Score: 0")
             deck.merge(discard) 
             discard.clear()
 
