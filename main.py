@@ -275,16 +275,18 @@ def main():
     if not fs:
         turn_button = Button(screen,"End Turn",.88,.8)
         exit_button = Button(screen,"Exit", .9,.05)
+        score_keep = Button(screen,"Score: "+str(score),.5,.1)
       
     else: 
         turn_button = Button(screen,"End Turn",.8,.8)
         exit_button = Button(screen,"Exit", .8,.1)
         health = Health(screen,.15,.8)
         energy = Energy(screen,.15,.85)
+        score_keep = Button(screen,"Score: "+str(score),.5,.1)
         
     all_sprites = pygame.sprite.RenderPlain((hero, enemy))
     
-    ui_elements = [health,energy,turn_button,exit_button,enemy]
+    ui_elements = [health,energy,turn_button,exit_button,score_keep,enemy]
     #used when checking for clicks on cards, avoid checking clicks on non card elements
     cards = pygame.sprite.RenderPlain()
     
@@ -357,6 +359,7 @@ def main():
                         elif enemy.health <=0:
                             alert(screen, "Player killed the enemy!", 1)
                             score += 50
+                            score_keep.update("Score: "+str(score))
                             mob_mult += 1
 #                             if endgame(screen,score,True):
                             enemy.kill()

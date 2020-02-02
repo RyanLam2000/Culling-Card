@@ -11,8 +11,9 @@ class Button(pygame.sprite.Sprite):
         self.x=x 
         self.y=y
         
-        font = pygame.font.Font("data/dpcomic.ttf", 36)
-        self.text = font.render(str(self.txt), 1, (188, 62, 31))
+        self.font = pygame.font.Font("data/dpcomic.ttf", 36)
+        
+        self.text = self.font.render(str(self.txt), 1, (188, 62, 31))
         self.update()
    
         
@@ -20,7 +21,10 @@ class Button(pygame.sprite.Sprite):
     def clicked(self):
         print("clicked")
     
-    def update(self):
+    def update(self,text=None):
+        if text is not None:
+            self.txt = text
+            self.text = self.font.render(str(self.txt),1,(188, 62, 31))
         textpos = self.text.get_rect(centerx=self.screen.get_width()*self.x,centery=
         36+(self.y*self.screen.get_height()))
         self.screen.blit(self.text, textpos)
