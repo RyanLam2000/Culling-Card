@@ -10,6 +10,7 @@ class Button(pygame.sprite.Sprite):
         self.txt = "  "+txt+"  "
         self.x=x 
         self.y=y
+        
         font = pygame.font.Font(None, 36)
         self.text = font.render(str(self.txt), 1, (188, 62, 31),(0,0,0))
         self.update()

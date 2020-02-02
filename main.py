@@ -86,14 +86,13 @@ def main():
     player_turn = True
     
     # Draw Everything
-   #screen.blit(background, (0, 0))
+    screen.blit(background, (0, 0))
     all_sprites.draw(screen)
     pygame.display.flip()
     all_sprites.update()
 
     while going:
         clock.tick(60)  
-        
         # Handle Input Events            
         while player_turn:
             for event in pygame.event.get():
@@ -111,41 +110,35 @@ def main():
                             card.clicked(hero, enemy)
                             
                 elif event.type == RESIZABLE:
-                #redefine screen and fit background to screen
+                    #redefine screen and fit background to screen
                     surface = pygame.display.set_mode((event.w, event.h),
                                                       pygame.RESIZABLE)
-                    background = pygame.Surface(screen.get_size())
+                    background = pygame.Surface(surface.get_size())
                     background = background.convert()    
                     background.fill((250, 250, 250))
-                    
+                    screen.blit(background,(0,0))
                     #re-render all objects
-                    health.updates(bg=background)
+                    health.updates()
                     turn_button.update(bg=background)
-                    energy.updates(bg=background)
+                    energy.updates()
                     for sprite in all_sprites:
                         sprite.update()
-        enemy.attack()
-        
-        player_turn = True
-        
-        screen.blit(background, (0,0))
+                    pygame.display.flip()
 
+        enemy.attack()
+         
+        player_turn = True
+         
+        screen.blit(background, (0,0))
+ 
         all_sprites.update()
-        health.updates(-5, screen)
-        energy.updates(-5, screen)
+ 
         if health.isDead():
             going = False
         all_sprites.draw(screen)
        
         pygame.display.flip()
         
-        
-        
-        
-        
-
-        
-
     pygame.quit()
 
 
