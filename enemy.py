@@ -32,7 +32,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.topleft = (screen.get_width()*.8), screen.get_size()[1]*.5
         
         #Display health 
-        font = pygame.font.Font(None, 36)
+        font = pygame.font.Font("data/dpcomic.ttf", 36)
         font.set_underline(1)
         self.text = font.render("HP:"+str(self.health), 1, (255, 0, 0))
         text_center = (self.rect.topleft[0],self.rect.topleft[1])

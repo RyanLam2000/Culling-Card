@@ -14,7 +14,7 @@ class Health():
     def update(self, damage = 0):
 
         self.health += damage
-        font = pygame.font.Font(None, 36)
+        font = pygame.font.Font("data/dpcomic.ttf", 36)
         self.text = font.render("HP:"+str(self.health), 1, (255, 0, 0))
 
         textpos = self.text.get_rect(centerx=self.screen.get_width()*.1,centery=self.screen.get_height()*.85)

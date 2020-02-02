@@ -12,6 +12,7 @@ from button import Button
 from deck import Deck
 from bg_image import BackgroundImage
 from get_enemy import get_enemy
+from pygame.examples.video import full
 
 
 white = (255, 255, 255) 
@@ -56,8 +57,8 @@ def render_text(string,w,h,screen,font,c1,c2):
 
 def startgame(screen):
    
-    title_font = pygame.font.Font(None,48)
-    font = pygame.font.Font(None, 32) 
+    title_font = pygame.font.Font("data/dpcomic.ttf",48)
+    font = pygame.font.Font("data/dpcomic.ttf", 32) 
     width = screen.get_width()
     height = screen.get_height()
     
@@ -93,9 +94,7 @@ def startgame(screen):
                         med_rect = render_text("960*720",width/2,height/2+48,screen,font,white,black)
                         sm_rect = render_text("800*600",width/2,height/2+76,screen,font,white,black)
                         ret_rect = render_text("Return",width/2,height/2+108,screen,font,white,black)
-     
                         pygame.display.flip()
-                       
                         while True:
                             for event in pygame.event.get():
                                 if event.type == QUIT:
@@ -103,15 +102,42 @@ def startgame(screen):
                                 elif event.type == MOUSEBUTTONDOWN:
                                     pos = pygame.mouse.get_pos()
                                     if ret_rect.collidepoint(pos):
-                                        print('return')
                                         ret_flag = True
                                         break
+                                    elif fs_rect.collidepoint(pos):
+#                                         pygame.display.set_mode((pygame.display.Info().current_w,pygame.display.Info().current_h),
+#                                                                 pygame.FULLSCREEN)
+#                                         print(str(pygame.display.Info().current_w)+ " " +str(pygame.display.Info().current_h))
+                                        return "full"
+                                    elif med_rect.collidepoint(pos):
+#                                         pygame.display.set_mode((960,720),pygame.NOFRAME)
+                                        return "med"
+                                    elif sm_rect.collidepoint(pos):
+#                                         pygame.display.set_mode((800,600),pygame.NOFRAME)
+                                        return "sm"
+                                    elif event.type == RESIZABLE:
+                                        #redefine screen and fit background to screen
+                                        width,height = event.size
+                                        if width<600:
+                                            width=400
+                                        if height<400:
+                                            height=400
+                                        screen=pygame.display.set_mode((width, height),
+                                                                          pygame.RESIZABLE|HWSURFACE|DOUBLEBUF)
                             if ret_flag:
                                 break
-                        print("broke")
                         if ret_flag:
-                            print("breaking")
                             break
+                elif event.type == RESIZABLE:
+                    #redefine screen and fit background to screen
+                    width,height = event.size
+                    if width<600:
+                        width=400
+                    if height<400:
+                        height=400
+                    screen=pygame.display.set_mode((width, height),
+                                                      pygame.RESIZABLE|HWSURFACE|DOUBLEBUF)
+        
             if ret_flag: 
                 break
                                     
@@ -122,7 +148,7 @@ def endgame(screen,high,won=True):
     background = BackgroundImage('data/background.png',[0,0])
     screen.fill([255, 255, 255])
     screen.blit(background.image, background.rect)
-    font = pygame.font.Font(None, 32) 
+    font = pygame.font.Font("data/dpcomic.ttf", 32) 
     width = screen.get_width()
     height = screen.get_height()
     
@@ -169,7 +195,7 @@ def endgame(screen,high,won=True):
 def alert(screen,string,seconds): 
     width = screen.get_width()
     height = screen.get_height()
-    font = pygame.font.Font(None, 32)      
+    font = pygame.font.Font("data/dpcomic.ttf", 32)      
     streak_text = font.render(string,True,white,black)
     streak_rect = streak_text.get_rect(center=(width/2,height/2+64))
     screen.blit(streak_text,streak_rect)
@@ -183,12 +209,21 @@ def main():
        a loop until the function returns."""
     # Initialize Everything
     pygame.init()
-    screen = pygame.display.set_mode((600, 600),pygame.RESIZABLE)
+    width = pygame.display.Info().current_w
+    height = pygame.display.Info().current_h
+    screen = pygame.display.set_mode((600, 600),RESIZABLE)
     pygame.display.set_caption("Culling Card")
     pygame.mouse.set_visible(1)
 
-    startgame(screen)
-
+    size = startgame(screen) 
+    if size=="sm":
+        screen = pygame.display.set_mode((800, 600),RESIZABLE)
+    elif size =="med":
+        screen = pygame.display.set_mode((800, 600),RESIZABLE)
+    elif size == "full":
+        print(str(width)+ " " +str(height))
+        screen = pygame.display.set_mode((width, height),FULLSCREEN)
+        fs=True
     # Create The Backgound
     background = BackgroundImage('data/background.png',[0,0])
     screen.fill([255, 255, 255])
@@ -281,10 +316,15 @@ def main():
                                 redraw_screen(screen,ui_elements,all_sprites)
                                 pygame.display.flip()
 
-                elif event.type == RESIZABLE:
+                elif event.type == pygame.VIDEORESIZE:
                     #redefine screen and fit background to screen
-                    pygame.display.set_mode((event.w, event.h),
-                                                      pygame.RESIZABLE)
+                    width,height = event.size
+                    if width<600:
+                        width=400
+                    if height<400:
+                        height=400
+                    screen=pygame.display.set_mode((width, height),
+                                                      pygame.RESIZABLE|HWSURFACE|DOUBLEBUF)
                     redraw_screen(screen,ui_elements,all_sprites)
                     pygame.display.flip()
         energy.energy = 3
