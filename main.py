@@ -12,9 +12,8 @@ from button import Button
 from deck import Deck
 from bg_image import BackgroundImage
 from get_enemy import get_enemy
-from pygame.examples.video import full
-import pygame_sdl2
-pygame_sdl2.import_as_pygame()
+
+
 
 white = (255, 255, 255) 
 green = (0, 255, 0) 
@@ -224,6 +223,7 @@ def main():
     elif size == "full":
         print(str(width)+ " " +str(height))
         screen = pygame.display.set_mode((width, height),FULLSCREEN)
+        fs = True
     # Create The Backgound
     background = BackgroundImage('data/background.png',[0,0])
     screen.fill([255, 255, 255])
@@ -243,8 +243,8 @@ def main():
     deck = Deck()
     hand = []
     discard = []
-    turn_button = Button(screen,"End Turn",.88,.8)
-    
+    turn_button = Button(screen,"End Turn",.85,.8)
+    exit_buttom = Button(screen,"Exit", .85,.75)
     all_sprites = pygame.sprite.RenderPlain((hero, enemy))
     
     ui_elements = [health,energy,turn_button,enemy]
@@ -316,7 +316,7 @@ def main():
                                 redraw_screen(screen,ui_elements,all_sprites)
                                 pygame.display.flip()
 
-                elif event.type == pygame.VIDEORESIZE:
+                elif event.type == RESIZABLE and not fs:
                     #redefine screen and fit background to screen
                     width,height = event.size
                     if width<600:
