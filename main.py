@@ -12,6 +12,7 @@ from button import Button
 from deck import Deck
 from bg_image import BackgroundImage
 from get_enemy import get_enemy
+from text import Text
 
 
 white = (255, 255, 255) 
@@ -36,7 +37,7 @@ black = (0,0,0)
 
 def redraw_screen(screen,ui_elements,all_sprites,click = False):
     
-    background = BackgroundImage('data/background.png',[0,0])
+    background = BackgroundImage('data/background.jpg',[0,0])
     screen.fill([255, 255, 255])
     screen.blit(background.image, background.rect)
     
@@ -47,6 +48,7 @@ def redraw_screen(screen,ui_elements,all_sprites,click = False):
         for sprite in all_sprites:
             sprite.update()
     all_sprites.draw(screen)
+    
 def render_text(string,w,h,screen,font,c1,c2):
     text = font.render(string,True,c1,c2)
     text_rect = text.get_rect(center=(w,h))
@@ -64,17 +66,18 @@ def startgame(screen):
     with open('data/high_score.txt',"r+") as f:
         score=f.readline()
         f.close()  
+    background = BackgroundImage('data/background.jpg',[0,0])
+    screen.fill([255, 255, 255])
+    screen.blit(background.image, background.rect)
+
+    title_text = Text("Culling Card",0,0,screen,font,white,black)
+    cont_rect = Text("Play",0,48,screen,font,white,black)
+    score_text = Text("High Score: "+score,0,76,screen,font,white,black)
+    streak_rect = Text("Choose Resolution",0,108,screen,font,white,black)
+    pygame.display.flip()
+    menu_text = [cont_rect,title_text,score_text,streak_rect]
+
     while True:
-        print("redrawing")
-        background = BackgroundImage('data/background.png',[0,0])
-        screen.fill([255, 255, 255])
-        screen.blit(background.image, background.rect)
-        render_text("Culling Card",width/2,height/2,screen,font,white,black)
-        cont_rect = render_text("Play",width/2,height/2+48,screen,font,white,black)
-        render_text("High Score: "+score,width/2,height/2+76,screen,font,white,black)
-        streak_rect = render_text("Choose Resolution",width/2,height/2+108,screen,font,white,black)
-                    
-        pygame.display.flip()
         ret_flag = False
         while True:
             for event in pygame.event.get():
@@ -82,47 +85,57 @@ def startgame(screen):
                     exit()
                 elif event.type == MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
-                    if cont_rect.collidepoint(pos): # player clicked end turn
+                    if cont_rect.rect.collidepoint(pos): # player clicked end turn
                         return True
-                    elif streak_rect.collidepoint(pos): 
-                        print("res chose")
-                        background = BackgroundImage('data/background.png',[0,0])
+                    elif streak_rect.rect.collidepoint(pos): 
+                        background = BackgroundImage('data/background.jpg',[0,0])
                         screen.fill([255, 255, 255])
                         screen.blit(background.image, background.rect)
-                        fs_rect = render_text("Full Screen",width/2,height/2,screen,font,white,black)
-                        med_rect = render_text("960*720",width/2,height/2+48,screen,font,white,black)
-                        sm_rect = render_text("800*600",width/2,height/2+76,screen,font,white,black)
-                        ret_rect = render_text("Return",width/2,height/2+108,screen,font,white,black)
+                        fs_rect = Text("Full Screen",0,0,screen,font,white,black)
+                        med_rect = Text("960*720",0,48,screen,font,white,black)
+                        sm_rect = Text("800*600",0,76,screen,font,white,black)
+                        ret_rect = Text("Return",0,108,screen,font,white,black)   
+                        res_text = [fs_rect,med_rect,sm_rect,ret_rect]
                         pygame.display.flip()
+                        
                         while True:
                             for event in pygame.event.get():
                                 if event.type == QUIT:
                                     exit()
                                 elif event.type == MOUSEBUTTONDOWN:
                                     pos = pygame.mouse.get_pos()
-                                    if ret_rect.collidepoint(pos):
+                                    if ret_rect.rect.collidepoint(pos):
                                         ret_flag = True
                                         break
-                                    elif fs_rect.collidepoint(pos):
+                                    elif fs_rect.rect.collidepoint(pos):
 #                                         pygame.display.set_mode((pygame.display.Info().current_w,pygame.display.Info().current_h),
 #                                                                 pygame.FULLSCREEN)
 #                                         print(str(pygame.display.Info().current_w)+ " " +str(pygame.display.Info().current_h))
                                         return "full"
-                                    elif med_rect.collidepoint(pos):
+                                    elif med_rect.rect.collidepoint(pos):
 #                                         pygame.display.set_mode((960,720),pygame.NOFRAME)
                                         return "med"
-                                    elif sm_rect.collidepoint(pos):
+                                    elif sm_rect.rect.collidepoint(pos):
 #                                         pygame.display.set_mode((800,600),pygame.NOFRAME)
                                         return "sm"
-                                    elif event.type == RESIZABLE:
-                                        #redefine screen and fit background to screen
-                                        width,height = event.size
-                                        if width<600:
-                                            width=400
-                                        if height<400:
-                                            height=400
-                                        screen=pygame.display.set_mode((width, height),
-                                                                          pygame.RESIZABLE|HWSURFACE|DOUBLEBUF)
+                                elif event.type == RESIZABLE:
+                                    print("res resize")
+                                    #redefine screen and fit background to screen
+                                    width,height = event.size
+                                    if width<600:
+                                        width=400
+                                    if height<400:
+                                        height=400
+                                    screen = pygame.display.set_mode((width, height),RESIZABLE)
+                                    background = BackgroundImage('data/background.jpg',[0,0])
+                                    screen.fill([255, 255, 255])
+                                    screen.blit(background.image, background.rect)
+                     
+                                    for txt in res_text:
+                                        txt.update(screen)
+                                     
+                                    pygame.display.flip()
+#                                                                 
                             if ret_flag:
                                 break
                         if ret_flag:
@@ -134,17 +147,24 @@ def startgame(screen):
                         width=400
                     if height<400:
                         height=400
-                    screen=pygame.display.set_mode((width, height),
-                                                      pygame.RESIZABLE|HWSURFACE|DOUBLEBUF)
-        
+                    screen = pygame.display.set_mode((width, height),RESIZABLE)
+                    background = BackgroundImage('data/background.jpg',[0,0])
+                    screen.fill([255, 255, 255])
+                    screen.blit(background.image, background.rect)
+                    for txt in menu_text:
+                        txt.update(screen)
+                    
+                    pygame.display.flip()
+                                                     
+         
             if ret_flag: 
                 break
-                                    
+                                     
     return False
      
 
 def endgame(screen,high,won=True):
-    background = BackgroundImage('data/background.png',[0,0])
+    background = BackgroundImage('data/background.jpg',[0,0])
     screen.fill([255, 255, 255])
     screen.blit(background.image, background.rect)
     font = pygame.font.Font("data/dpcomic.ttf", 32) 
@@ -224,7 +244,7 @@ def main():
         screen = pygame.display.set_mode((width, height),FULLSCREEN)
         fs = True
     # Create The Backgound
-    background = BackgroundImage('data/background.png',[0,0])
+    background = BackgroundImage('data/background.jpg',[0,0])
     screen.fill([255, 255, 255])
     screen.blit(background.image, background.rect)
 
@@ -254,7 +274,7 @@ def main():
         
     all_sprites = pygame.sprite.RenderPlain((hero, enemy))
     
-    ui_elements = [health,energy,turn_button,enemy,exit_button]
+    ui_elements = [health,energy,turn_button,exit_button,enemy]
     #used when checking for clicks on cards, avoid checking clicks on non card elements
     cards = pygame.sprite.RenderPlain()
     
