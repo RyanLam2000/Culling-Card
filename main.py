@@ -214,7 +214,7 @@ def main():
     screen = pygame.display.set_mode((600, 600),RESIZABLE)
     pygame.display.set_caption("Culling Card")
     pygame.mouse.set_visible(1)
-
+    fs = False
     size = startgame(screen) 
     if size=="sm":
         screen = pygame.display.set_mode((800, 600),RESIZABLE)
@@ -243,11 +243,12 @@ def main():
     deck = Deck()
     hand = []
     discard = []
-    turn_button = Button(screen,"End Turn",.85,.8)
-    exit_buttom = Button(screen,"Exit", .85,.75)
+    turn_button1 = Button(screen,"End ",.87,.82)
+    turn_button2 = Button(screen,"Turn",.87,.877)
+    exit_button = Button(screen,"Exit", .87,.75)
     all_sprites = pygame.sprite.RenderPlain((hero, enemy))
     
-    ui_elements = [health,energy,turn_button,enemy]
+    ui_elements = [health,energy,turn_button1,turn_button2,enemy,exit_button]
     #used when checking for clicks on cards, avoid checking clicks on non card elements
     cards = pygame.sprite.RenderPlain()
     
@@ -278,12 +279,14 @@ def main():
                     break
                 elif event.type == MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
-                    if turn_button.rect.collidepoint(pos): # player clicked end turn
+                    if turn_button1.rect.collidepoint(pos) or turn_button2.rect.collidepoint(pos): # player clicked end turn
                         all_sprites.remove(hand)
                         cards.empty()
                         discard.extend(hand)
                         hand = []
                         player_turn = False
+                    elif exit_button.rect.collidepoint(pos):
+                        exit()
                     else:
                         for card in hand.copy():
                             if card.rect.collidepoint(pos):

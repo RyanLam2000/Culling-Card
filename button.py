@@ -12,7 +12,7 @@ class Button(pygame.sprite.Sprite):
         self.y=y
         
         font = pygame.font.Font("data/dpcomic.ttf", 36)
-        self.text = font.render(str(self.txt), 1, (188, 62, 31),(0,0,0))
+        self.text = font.render(str(self.txt), 1, (188, 62, 31))
         self.update()
    
         
