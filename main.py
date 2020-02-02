@@ -70,15 +70,11 @@ def main():
     enemy = Enemy("enemy.png")
     health = Health(screen)
     energy = Energy(screen)
-<<<<<<< HEAD
     deck = Deck()
     hand = []
     discard = []
 
-    turn_button = Button(background,"End Turn",.5,.1)
-=======
     turn_button = Button(background,"End Turn",.88,.8)
->>>>>>> 9b227f9c1d5134cb3f7313d121fb453bcd04ad8f
 
     all_sprites = pygame.sprite.RenderPlain((hero, enemy))
     
