@@ -5,8 +5,8 @@ from helpers import *
 
 class Button(pygame.sprite.Sprite):
     
-    def __init__(self,bg,txt,x,y):
-        self.background = bg
+    def __init__(self,screen,txt,x,y):
+        self.screen = screen
         self.txt = "  "+txt+"  "
         self.x=x 
         self.y=y
@@ -20,12 +20,10 @@ class Button(pygame.sprite.Sprite):
     def clicked(self):
         print("clicked")
     
-    def update(self,bg = None):
-        if bg is not None:
-            self.background=bg
-        textpos = self.text.get_rect(centerx=self.background.get_width()*self.x,centery=
-        36+(self.y*self.background.get_height()))
-        self.background.blit(self.text, textpos)
+    def update(self):
+        textpos = self.text.get_rect(centerx=self.screen.get_width()*self.x,centery=
+        36+(self.y*self.screen.get_height()))
+        self.screen.blit(self.text, textpos)
         self.rect = textpos
         
        
