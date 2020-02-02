@@ -114,7 +114,6 @@ def startgame(screen):
                                     elif fs_rect.rect.collidepoint(pos):
 #                                         pygame.display.set_mode((pygame.display.Info().current_w,pygame.display.Info().current_h),
 #                                                                 pygame.FULLSCREEN)
-#                                         print(str(pygame.display.Info().current_w)+ " " +str(pygame.display.Info().current_h))
                                         return "full"
                                     elif med_rect.rect.collidepoint(pos):
 #                                         pygame.display.set_mode((960,720),pygame.NOFRAME)
@@ -250,7 +249,6 @@ def main():
     elif size =="med":
         screen = pygame.display.set_mode((800, 600),RESIZABLE)
     elif size == "full":
-        print(str(width)+ " " +str(height))
         screen = pygame.display.set_mode((width, height),FULLSCREEN)
         fs = True
     # Create The Backgound
