@@ -2,7 +2,7 @@ from card import Card
 
 class GreenAttack(Card):
     def __init__(self, slot = -1):
-        super().__init__(img = "attack_card_green.jpeg")
+        super().__init__(img = "Viral_Knife.jpg")
         self.en_cost = 1
         
     def clicked(self, p, mob, deck, hand, discard):
