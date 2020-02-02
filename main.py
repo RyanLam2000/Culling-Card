@@ -147,11 +147,11 @@ def main():
     
     while going:
         clock.tick(60)  
-        
+  
         deck.draw_n(5, hand, discard)
         all_sprites.add(hand)
+        print(len(hand))
         cards.add(hand)
-            
         redraw_screen(screen, ui_elements, all_sprites)
         pygame.display.flip()
         
@@ -206,6 +206,7 @@ def main():
                     redraw_screen(screen,ui_elements,all_sprites)
                     pygame.display.flip()
                  
+        energy.energy = min(energy.energy+20,100)
         enemy.attack()
         player_turn = True
         
