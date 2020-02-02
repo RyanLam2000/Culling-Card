@@ -13,7 +13,7 @@ class Card(pygame.sprite.Sprite):
         self.update()
         
     
-    def clicked(self, player, enemy):
+    def clicked(self, player, enemy, deck, hand, discard):
         """Update in response to click
         """
         if not self.selected:

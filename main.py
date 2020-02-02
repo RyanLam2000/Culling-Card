@@ -123,12 +123,11 @@ def main():
                         cards.empty()
                         discard.extend(hand)
                         hand = []
-                        player_turn = False 
-                        print("skipped a turn")
+                        player_turn = False
                     else:
                         clicked = [s for s in cards if s.rect.collidepoint(pos)]
                         for card in clicked: 
-                            card.clicked(hero, enemy)       
+                            card.clicked(hero, enemy, deck, hand, discard)       
                 elif event.type == RESIZABLE:
                     #redefine screen and fit background to screen
                     surface = pygame.display.set_mode((event.w, event.h),
@@ -153,7 +152,7 @@ def main():
          
         player_turn = True
 
-        screen.blit(background, (0,0))
+        screen.blit(background.image, (0,0))
         all_sprites.update()
         health.update(-5)
         energy.update(-5)
