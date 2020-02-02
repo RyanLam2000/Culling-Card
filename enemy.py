@@ -20,22 +20,21 @@ class Enemy(pygame.sprite.Sprite):
         print("attack")
         
     def update(self,dmg=0):
+        screen = pygame.display.get_surface()
+        
         self.health -= dmg
         full_img = load_image(self.img, -1)[0]
-        self.image = pygame.transform.scale(full_img,(150,150))
+        self.image = pygame.transform.scale(full_img,(int(.1*screen.get_width()),int(.1*screen.get_width())))
         self.rect = self.image.get_rect()
-        
-        screen = pygame.display.get_surface()
         self.area = screen.get_rect()
  
         #set position = 80vw,50vh
-        self.rect.topleft = (screen.get_width()*.8), screen.get_size()[1]*.4
+        self.rect.topleft = (screen.get_width()*.8), screen.get_size()[1]*.66 - self.image.get_height()*.9
         
         #Display health 
         font = pygame.font.Font("data/dpcomic.ttf", 36)
-        font.set_underline(1)
         self.text = font.render("HP:"+str(self.health), 1, (255, 0, 0))
-        text_center = (self.rect.topleft[0],self.rect.topleft[1])
+        text_center = (self.rect.topleft[0]+(self.image.get_width()/2),int(self.rect.topleft[1])*.9)
         textpos = self.text.get_rect(center=text_center)
         screen.blit(self.text, textpos)
     

@@ -14,6 +14,7 @@ from bg_image import BackgroundImage
 from get_enemy import get_enemy
 from text import Text
 from cards import *
+from shield_bar import Shield
 
 
 white = (255, 255, 255) 
@@ -269,6 +270,7 @@ def main():
     enemy = get_enemy()
     health = Health(screen)
     energy = Energy(screen)
+    shield = Shield(screen)
     deck = Deck()
     hand = []
     discard = []
@@ -285,8 +287,9 @@ def main():
         score_keep = Button(screen,"Score: "+str(score),.5,.1)
         
     all_sprites = pygame.sprite.RenderPlain((hero, enemy))
-    
-    ui_elements = [health,energy,turn_button,exit_button,score_keep,enemy]
+
+    ui_elements = [health,energy, shield,turn_button,enemy,exit_button]
+
     #used when checking for clicks on cards, avoid checking clicks on non card elements
     cards = pygame.sprite.RenderPlain()
     
@@ -346,6 +349,7 @@ def main():
                                         alert(screen, "Player setup 2 block!", 1)
                                     energy.update(-card.en_cost)
                                     card.clicked(hero, enemy, deck, hand, discard)   
+                                    shield.defense = hero.defense
                                     cards.add(hand)
                                     all_sprites.add(hand)
                                     break
@@ -363,6 +367,8 @@ def main():
                             mob_mult += 1
 #                             if endgame(screen,score,True):
                             enemy.kill()
+                            hero.defense = 0
+                            shield.defense = hero.defense
                             enemy = get_enemy(mob_mult)
                             ui_elements[-2] = enemy
                             energy.energy = 3
@@ -393,6 +399,7 @@ def main():
             hero.defense = hero.defense - enemy.pow
             alert(screen, f"Enemy hit player's shield for {enemy.pow} damage.", 1)
         hero.defense = 0
+        shield.defense = hero.defense
         player_turn = True
         
         if health.isDead():
