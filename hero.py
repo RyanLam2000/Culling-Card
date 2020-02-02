@@ -12,7 +12,7 @@ class Hero(pygame.sprite.Sprite):
     def update(self):
         #Load image and scale down
         self.full_img = load_image("hero.png", -1)[0]
-        self.image = pygame.transform.scale(self.full_img,(150,150))
+        self.image = pygame.transform.scale(self.full_img,(250,150))
         #Card hitbox
         self.rect = self.image.get_rect()
         
@@ -21,4 +21,4 @@ class Hero(pygame.sprite.Sprite):
  
         #set position = width * slot
         self.card_width = self.image.get_size()[0];
-        self.rect.topleft = (screen.get_width()*.1), screen.get_size()[1]*.5
+        self.rect.topleft = (screen.get_width()*.05), screen.get_size()[1]*.5

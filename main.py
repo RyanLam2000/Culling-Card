@@ -68,7 +68,7 @@ def main():
     enemy = Enemy("enemy.png")
     health = Health(screen)
     energy = Energy(screen)
-    turn_button = Button(background,"End Turn",.5,.1)
+    turn_button = Button(background,"End Turn",.88,.8)
 
     all_sprites = pygame.sprite.RenderPlain((hero, enemy))
     
@@ -86,7 +86,6 @@ def main():
     player_turn = True
     
     # Draw Everything
-
     all_sprites.update()
     turn_button.update()
 
