@@ -13,7 +13,8 @@ from deck import Deck
 from bg_image import BackgroundImage
 from get_enemy import get_enemy
 from pygame.examples.video import full
-
+import pygame_sdl2
+pygame_sdl2.import_as_pygame()
 
 white = (255, 255, 255) 
 green = (0, 255, 0) 
@@ -223,7 +224,6 @@ def main():
     elif size == "full":
         print(str(width)+ " " +str(height))
         screen = pygame.display.set_mode((width, height),FULLSCREEN)
-        fs=True
     # Create The Backgound
     background = BackgroundImage('data/background.png',[0,0])
     screen.fill([255, 255, 255])
