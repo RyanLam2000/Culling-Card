@@ -329,7 +329,12 @@ def main():
                     pygame.display.flip()
         energy.energy = 3
         enemy.attack()
-        health.update(-enemy.pow)
+        dmg_remaining = enemy.pow - hero.defense
+        if (dmg_remaining > 0):
+            health.update(-dmg_remaining)
+        else:
+            hero.defense = hero.defense - enemy.pow
+        hero.defense = 0
         player_turn = True
         
         if health.isDead():

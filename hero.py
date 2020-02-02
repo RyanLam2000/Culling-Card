@@ -7,7 +7,7 @@ class Hero(pygame.sprite.Sprite):
     
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)  # call Sprite intializer
-        self.defence = 0
+        self.defense = 0
         self.update()
         
     def update(self):
