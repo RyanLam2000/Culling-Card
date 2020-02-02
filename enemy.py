@@ -23,8 +23,6 @@ class Enemy(pygame.sprite.Sprite):
         self.health -= dmg
         full_img = load_image(self.img, -1)[0]
         self.image = pygame.transform.scale(full_img,(150,150))
-
-
         self.rect = self.image.get_rect()
         
         screen = pygame.display.get_surface()
