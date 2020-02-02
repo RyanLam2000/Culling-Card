@@ -11,9 +11,9 @@ class Card(pygame.sprite.Sprite):
         self.slot = slot
         self.img = img
         self.selected = False
-        self.update()
-       
-    def clicked(self):
+        self.update()        
+    
+    def clicked(self, player, enemy, deck, hand, discard):
         """Update in response to click
         """
         if not self.selected:

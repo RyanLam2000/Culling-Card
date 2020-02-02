@@ -183,7 +183,6 @@ def main():
                         discard.extend(hand)
                         hand = []
                         player_turn = False 
-
                     else:
                         clicked = [s for s in cards if s.rect.collidepoint(pos)]
                         for card in clicked: 
