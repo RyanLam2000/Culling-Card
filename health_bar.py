@@ -7,7 +7,7 @@ class Health():
 
 
     def __init__(self,screen):
-        self.health = 100
+        self.health = 25
         self.screen=screen
         self.update()
 
@@ -21,4 +21,4 @@ class Health():
         self.screen.blit(self.text, textpos)
 
     def isDead(self):
-        return self.health == 0
+        return self.health <= 0

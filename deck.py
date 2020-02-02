@@ -24,7 +24,7 @@ class Deck:
         add_new_cards(deck, BlueAttack, 2)
         add_new_cards(deck, RedAttack, 2)
         add_new_cards(deck, GreenAttack, 2)
-        #add_new_cards(deck, DefendCard, 3)
+        add_new_cards(deck, DefendCard, 3)
         add_new_cards(deck, DrawCard, 2)
 
         random.shuffle(deck)
@@ -48,7 +48,6 @@ class Deck:
     
     
     def draw_n(self, num_cards: int, hand, discard):
-        print("drawing n"+str(num_cards))
         for i in range(num_cards):
             self.draw(hand, discard)
 
