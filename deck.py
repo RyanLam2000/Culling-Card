@@ -11,6 +11,10 @@ import random
 def add_new_cards(deck:[Card], card_type, num):
     for i in range(num):
         deck.append(card_type(i))
+        
+def update_card_slots(hand):
+    for i in range(len(hand)):
+        hand[i].set_slot(i)
 
 class Deck:
     def __init__(self):
@@ -20,7 +24,7 @@ class Deck:
         add_new_cards(deck, BlueAttack, 2)
         add_new_cards(deck, RedAttack, 2)
         add_new_cards(deck, GreenAttack, 2)
-        add_new_cards(deck, DefendCard, 3)
+        #add_new_cards(deck, DefendCard, 3)
         add_new_cards(deck, DrawCard, 2)
 
         random.shuffle(deck)
@@ -31,22 +35,24 @@ class Deck:
         return len(self.deck)
     
     
-    def draw(self):
+    def draw(self, hand, discard):
         if (len(self) == 0):
-            return
-        
-        return self.deck.pop(-1)
-    
-    
-    def draw_n(self, num_cards: int):
-        if (num_cards > len(self)):
-            drawn_cards = self.deck
-            self.deck = list()
-            return drawn_cards
+            self.merge(discard)
+            discard.clear()
+        if (len(hand) == 5):
+            discard.append(self.deck.pop(-1))
+        else:
+            hand.append(self.deck.pop(-1))
             
-        drawn_cards = self.deck[-num_cards:]
-        self.deck = self.deck[:-num_cards]
-        return drawn_cards
+        update_card_slots(hand)
+    
+    
+    def draw_n(self, num_cards: int, hand, discard):
+        for i in range(num_cards):
+            self.draw(hand, discard)
+
+        
     
     def merge(self, cards: [Card]):
         self.deck.extend(cards)
+        random.shuffle(self.deck)
