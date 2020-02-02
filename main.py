@@ -48,6 +48,41 @@ def redraw_screen(screen,ui_elements,all_sprites,click = False):
             sprite.update()
     all_sprites.draw(screen)
     
+def startgame(screen):
+    pass
+#     background = BackgroundImage('data/background.png',[0,0])
+#     screen.fill([255, 255, 255])
+#     screen.blit(background.image, background.rect)
+#     font = pygame.font.Font(None, 32) 
+#     width = screen.get_width()
+#     height = screen.get_height()
+#     
+# 
+#     continue_text = font.render('Continue?', True, white, black)
+#     score_text = font.render('High Score: ', True, white, black)
+#     streak_text = font.render('Streak: ',True,white,black)
+#     
+#     streak_rect = streak_text.get_rect(center=(width/2,height/2+64))
+#     top_rect=top_text.get_rect(center=(width/2,height/2))
+#     score_rect=score_text.get_rect(center=(width/2,height/2+32))
+#     cont_rect = continue_text.get_rect(center=(width/2,height/2+96))
+#     
+#     screen.blit(top_text,top_rect)
+#     screen.blit(score_text,score_rect)
+#     screen.blit(continue_text,cont_rect)
+#     screen.blit(streak_text,streak_rect)
+#   
+#     pygame.display.flip()
+#     while True:
+#         for event in pygame.event.get():
+#             if event.type == QUIT:
+#                 exit()
+#             elif event.type == MOUSEBUTTONDOWN:
+#                 pos = pygame.mouse.get_pos()
+#                 if cont_rect.collidepoint(pos): # player clicked end turn
+#                     return True
+#     return False
+#     
 
 def endgame(screen,high,won=True):
     background = BackgroundImage('data/background.png',[0,0])
@@ -97,7 +132,16 @@ def endgame(screen,high,won=True):
                     return True
     return False
     
-
+def alert(screen,string,seconds): 
+    width = screen.get_width()
+    height = screen.get_height()
+    font = pygame.font.Font(None, 32)      
+    streak_text = font.render(string,True,white,black)
+    streak_rect = streak_text.get_rect(center=(width/2,height/2+64))
+    screen.blit(streak_text,streak_rect)
+    pygame.display.flip()
+    time.sleep(seconds)
+    
 
 def main():
     """this function is called when the program starts.
@@ -108,6 +152,8 @@ def main():
     screen = pygame.display.set_mode((600, 600),pygame.RESIZABLE)
     pygame.display.set_caption("Culling Card")
     pygame.mouse.set_visible(1)
+
+    startgame(screen)
 
     # Create The Backgound
     background = BackgroundImage('data/background.png',[0,0])
@@ -203,7 +249,8 @@ def main():
                                                       pygame.RESIZABLE)
                     redraw_screen(screen,ui_elements,all_sprites)
                     pygame.display.flip()
-                 
+        if energy.energy<=0:
+            alert(screen,"Out of Energy",2)
         energy.energy = min(energy.energy+20,100)
         enemy.attack()
         health.update(-enemy.pow)
