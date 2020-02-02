@@ -288,7 +288,7 @@ def main():
         
     all_sprites = pygame.sprite.RenderPlain((hero, enemy))
 
-    ui_elements = [health,energy, shield,turn_button,enemy,exit_button]
+    ui_elements = [health,energy, shield,turn_button,score_keep,enemy,exit_button]
 
     #used when checking for clicks on cards, avoid checking clicks on non card elements
     cards = pygame.sprite.RenderPlain()
